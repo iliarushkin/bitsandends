@@ -240,13 +240,12 @@ agg_mean=function(x,by,name='x',na.se.rm=FALSE){
 
 # A sort function that sorts only using the numeric characters in the strings, treating them as integers. E.g. c('a10','a2','a1') would be sorted as ('a1','a2','a10').
 sortnum=function(x,...){
+  options(warn=-1)
   y=x
   y=gsub('[[:alpha:]]','',y)
   y=gsub('[[:punct:]]','',y)
 
-  order(as.integer(y))
-
-  x=x[order(as.integer(y),...)]
+    x=x[order(as.integer(y),...)]
 
   return(x)
 
