@@ -84,6 +84,13 @@ plotlyridges=function(data,vardens,varcat,linecolor='darkblue',fillcolor='steelb
   fillcolor=as.vector(col2rgb(fillcolor))/255
   fillcolor=rgb(fillcolor[1],fillcolor[2],fillcolor[3],alpha=fillopacity)
 
+
+  if(is.null(x.min)){
+    xaxis=list(range=r)
+  }else{
+    xaxis=list(range=c(x.min,r[2]))
+  }
+
   for(i in rev(1:length(catnames))){
 
     p=p%>%add_trace(x=x[[i]],y=i, line=list(color=linecolor,width=linewidth),showlegend=FALSE,hoverinfo='none')
@@ -91,7 +98,7 @@ plotlyridges=function(data,vardens,varcat,linecolor='darkblue',fillcolor='steelb
       x=x[[i]],y=y[[i]]+i,fill='tonexty', fillcolor=fillcolor, line=list(color=linecolor,width=linewidth),showlegend=FALSE, name=catnames[i],hoverinfo='text',text=text[i]
     )%>%layout(
       yaxis=list(tickmode='array',tickvals=(1:length(catnames)),ticktext=catnames,showline=TRUE)
-      ,xaxis=list(range=c(x.min,r[2]))
+      ,xaxis=xaxis
     )
 
   }
