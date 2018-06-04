@@ -61,7 +61,7 @@ plotlyridges=function(data,vardens,varcat,linecolor='darkblue',fillcolor='steelb
 
     x=x[!is.na(x)]
     q=quantile(x)
-    text=paste0('Median: ',round(q[3],round.digits),'<br>Range: [',round(q[1],round.digits),', ',round(q[5],round.digits),']','<br>Interquartile Range: [',round(q[2],round.digits),', ',round(q[4],round.digits),']')
+    text=paste0('Observations: ',prettyNum(length(x),big.mark=','),'<br>Median: ',round(q[3],round.digits),'<br>Range: [',round(q[1],round.digits),', ',round(q[5],round.digits),']','<br>Interquartile Range: [',round(q[2],round.digits),', ',round(q[4],round.digits),']')
     return(text)
   })$x
 
