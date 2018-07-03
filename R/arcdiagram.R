@@ -129,7 +129,7 @@ arcd=function(links,nodes
     x=0
   }
 
-  p=p%>%plotly::add_trace(inherit=FALSE,x=x,y=y,type='scatter',mode='markers',marker=list(size=nodesize
+  p=plotly::add_trace(p,inherit=FALSE,x=x,y=y,type='scatter',mode='markers',marker=list(size=nodesize
                                                                                               ,color='white'
                                                                                               ,opacity=1
                                                                                               ,line=list(color=colors,width=3)
@@ -149,7 +149,7 @@ arcd=function(links,nodes
     yaxis=list(showline=FALSE,showgrid=FALSE,zeroline=FALSE,showticklabels=TRUE)
     xaxis=list(showline=FALSE,showgrid=FALSE,zeroline=TRUE,showticklabels=FALSE)
   }
-  p=p%>%plotly::layout(title=''
+  p=plotly::layout(p,title=''
     ,xaxis=xaxis
     ,yaxis=yaxis
     )

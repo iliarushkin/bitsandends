@@ -119,10 +119,12 @@ plotlyridges=function(data,vardens,varcat,linecolor='darkblue',fillcolor='steelb
 
   for(i in rev(1:length(catnames))){
 
-    p=p%>%plotly::add_trace(x=x[[i]],y=i, line=list(color=linecolor,width=linewidth),showlegend=FALSE,hoverinfo='none')
-    p=p%>%plotly::add_trace(
+    p=plotly::add_trace(p,x=x[[i]],y=i, line=list(color=linecolor,width=linewidth),showlegend=FALSE,hoverinfo='none')
+    p=plotly::add_trace(p,
       x=x[[i]],y=y[[i]]+i,fill='tonexty', fillcolor=fillcolor, line=list(color=linecolor,width=linewidth),showlegend=FALSE, name=catnames[i],hoverinfo='text',text=text[i]
-    )%>%plotly::layout(
+    )
+
+    p=plotly::layout(p,
       yaxis=list(tickmode='array',tickvals=(1:length(catnames)),ticktext=catnames,showline=TRUE)
       ,xaxis=xaxis
     )
