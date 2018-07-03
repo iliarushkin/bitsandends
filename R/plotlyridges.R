@@ -1,5 +1,31 @@
 library(plotly)
 
+#' Mimicks \code{ggridges} but using \code{plotly} so that the output is interactive
+#'
+#' @param data data-frame of data to plot
+#' @param vardens name of the column in \code{data} to use on the x-axis ('density variable')
+#' @param varcat name of the column in \code{data} to use for splitting plots ('category variable')
+#' @param linecolor line color
+#' @param fillcolor fill color
+#' @param fillopacity fill opacity
+#' @param linewidth line width
+#' @param scale vertical scale of plots, compared to the spacing between plots.
+#' @param logspaced boolean, whether to use log-spaced points in calculating density
+#' @param cut.from how much to cut into the region to the left of the smallest data values, in units of the bandwidth.
+#' @param cut.to how much to cut into the region to the right of the greatest data values, in units of the bandwidth.
+#' @param n number of points used in calculation of density
+#' @param bw bandwidth to use in density calculation. if NULL, uses the default of \code{density}.
+#' @param bw.separate if TRUE, will use separately estimated bandwidth in each plot, overriding \code{bw}
+#' @param height.norm vertical normalization of plots. If 'integral', will normalize to unit area under the curve. If '1' will normalize to unit maximum height
+#' @param round.digits number of rounding digits used in hover labels
+#' @param x.min lower end of the x-axis range
+#' @param height passed as \code{height} to the plotly object
+#' @param width passed as \code{width} to the plotly object
+#'
+#' @return a plotly object
+#' @export
+#'
+#' @examples
 plotlyridges=function(data,vardens,varcat,linecolor='darkblue',fillcolor='steelblue',fillopacity=0.6,linewidth=0.5,scale=0.9,logspaced=FALSE,cut.from=0, cut.to=3,n=512,bw=NULL,bw.separate=FALSE,height.norm='integral',round.digits=2,x.min=0
                       ,height=NULL
                       ,width=NULL
@@ -79,7 +105,7 @@ plotlyridges=function(data,vardens,varcat,linecolor='darkblue',fillcolor='steelb
     yy=scale*yy/ymax
     return(yy)
   })
-  p=plot_ly(type='scatter',mode='lines',height=height,width=width)
+  p=plotly::plot_ly(type='scatter',mode='lines',height=height,width=width)
 
   fillcolor=as.vector(col2rgb(fillcolor))/255
   fillcolor=rgb(fillcolor[1],fillcolor[2],fillcolor[3],alpha=fillopacity)
@@ -93,10 +119,10 @@ plotlyridges=function(data,vardens,varcat,linecolor='darkblue',fillcolor='steelb
 
   for(i in rev(1:length(catnames))){
 
-    p=p%>%add_trace(x=x[[i]],y=i, line=list(color=linecolor,width=linewidth),showlegend=FALSE,hoverinfo='none')
-    p=p%>%add_trace(
+    p=p%>%plotly::add_trace(x=x[[i]],y=i, line=list(color=linecolor,width=linewidth),showlegend=FALSE,hoverinfo='none')
+    p=p%>%plotly::add_trace(
       x=x[[i]],y=y[[i]]+i,fill='tonexty', fillcolor=fillcolor, line=list(color=linecolor,width=linewidth),showlegend=FALSE, name=catnames[i],hoverinfo='text',text=text[i]
-    )%>%layout(
+    )%>%plotly::layout(
       yaxis=list(tickmode='array',tickvals=(1:length(catnames)),ticktext=catnames,showline=TRUE)
       ,xaxis=xaxis
     )
