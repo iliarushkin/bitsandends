@@ -212,78 +212,78 @@ Cohen.d=function(x1=NULL,x2=NULL,m,sdev,n){
 }
 
 
-agg_mean=function(x,by,name='x',na.se.rm=FALSE){
-
-  if(is.null(names(by))){
-    names(by)=paste0('Group.',1:length(by))
-  }
-
-  y=plyr::rename(aggregate(x,by=by,FUN=mean,na.rm=TRUE),c('x'=name))
-  y_sd=plyr::rename(aggregate(x,by=by,FUN=sd,na.rm=TRUE),c('x'='sd'))
-  y_n=plyr::rename(aggregate(x,by=by,FUN=length),c('x'='n'))
-  y_max=plyr::rename(aggregate(x,by=by,FUN=max,na.rm=TRUE),c('x'='max'))
-  y_min=plyr::rename(aggregate(x,by=by,FUN=min,na.rm=TRUE),c('x'='min'))
-
-  y$comb_id=paste(y[,names(by)[1]],'and')
-  y_sd$comb_id=paste(y_sd[,names(by)[1]],'and')
-  y_n$comb_id=paste(y_n[,names(by)[1]],'and')
-  y_max$comb_id=paste(y_max[,names(by)[1]],'and')
-  y_min$comb_id=paste(y_min[,names(by)[1]],'and')
-  if(length(by)>1){
-    for(i in 1:length(by)){
-      y$comb_id=paste(y$comb_id,'and',y[,names(by)[i]])
-      y_sd$comb_id=paste(y_sd$comb_id,'and',y_sd[,names(by)[i]])
-      y_n$comb_id=paste(y_n$comb_id,'and',y_n[,names(by)[i]])
-      y_max$comb_id=paste(y_max$comb_id,'and',y_max[,names(by)[i]])
-      y_min$comb_id=paste(y_min$comb_id,'and',y_min[,names(by)[i]])
-    }
-
-  }
-
-  y=merge(y,y_sd[,c('comb_id','sd')],by='comb_id')
-  y=merge(y,y_n[,c('comb_id','n')],by='comb_id')
-  y=merge(y,y_max[,c('comb_id','max')],by='comb_id')
-  y=merge(y,y_min[,c('comb_id','min')],by='comb_id')
-  y$comb_id=NULL
-  y$se=y$sd/sqrt(y$n)
-
-  if(na.se.rm){
-    y=subset(y,!is.na(y$se))
-  }
-
-  ##effect size and pvalues
-
-  i2=which(sapply(by,function(x){length(unique(x))})==2)
-  if(length(i2)>0){
-    i2=i2[1]
-
-    u=unique(y[,names(by)[i2]])
-    y$comb_id=''
-    for (i in 1:length(by)){
-      if(i!=i2){
-        y$comb_id=paste(y$comb_id,'and',y[,names(by)[i]])
-      }
-    }
-
-    values=unique(y$comb_id)
-    y$pval=NA
-    y$Cohen.d=NA
-    for(value in values){
-      i=which(y$comb_id==value)
-      t=y[i,]
-      y$pval[i]=pval(m=t[,name],sdev=t$sd,n=t$n,agg.data=TRUE)
-      y$Cohen.d[i]=Cohen.d(m=t[,name],sdev=t$sd,n=t$n,agg.data=TRUE)
-    }
-
-    y$comb_id=NULL
-  }
-
-
-
-
-  return(y)
-
-}
+# agg_mean=function(x,by,name='x',na.se.rm=FALSE){
+#
+#   if(is.null(names(by))){
+#     names(by)=paste0('Group.',1:length(by))
+#   }
+#
+#   y=plyr::rename(aggregate(x,by=by,FUN=mean,na.rm=TRUE),c('x'=name))
+#   y_sd=plyr::rename(aggregate(x,by=by,FUN=sd,na.rm=TRUE),c('x'='sd'))
+#   y_n=plyr::rename(aggregate(x,by=by,FUN=length),c('x'='n'))
+#   y_max=plyr::rename(aggregate(x,by=by,FUN=max,na.rm=TRUE),c('x'='max'))
+#   y_min=plyr::rename(aggregate(x,by=by,FUN=min,na.rm=TRUE),c('x'='min'))
+#
+#   y$comb_id=paste(y[,names(by)[1]],'and')
+#   y_sd$comb_id=paste(y_sd[,names(by)[1]],'and')
+#   y_n$comb_id=paste(y_n[,names(by)[1]],'and')
+#   y_max$comb_id=paste(y_max[,names(by)[1]],'and')
+#   y_min$comb_id=paste(y_min[,names(by)[1]],'and')
+#   if(length(by)>1){
+#     for(i in 1:length(by)){
+#       y$comb_id=paste(y$comb_id,'and',y[,names(by)[i]])
+#       y_sd$comb_id=paste(y_sd$comb_id,'and',y_sd[,names(by)[i]])
+#       y_n$comb_id=paste(y_n$comb_id,'and',y_n[,names(by)[i]])
+#       y_max$comb_id=paste(y_max$comb_id,'and',y_max[,names(by)[i]])
+#       y_min$comb_id=paste(y_min$comb_id,'and',y_min[,names(by)[i]])
+#     }
+#
+#   }
+#
+#   y=merge(y,y_sd[,c('comb_id','sd')],by='comb_id')
+#   y=merge(y,y_n[,c('comb_id','n')],by='comb_id')
+#   y=merge(y,y_max[,c('comb_id','max')],by='comb_id')
+#   y=merge(y,y_min[,c('comb_id','min')],by='comb_id')
+#   y$comb_id=NULL
+#   y$se=y$sd/sqrt(y$n)
+#
+#   if(na.se.rm){
+#     y=subset(y,!is.na(y$se))
+#   }
+#
+#   ##effect size and pvalues
+#
+#   i2=which(sapply(by,function(x){length(unique(x))})==2)
+#   if(length(i2)>0){
+#     i2=i2[1]
+#
+#     u=unique(y[,names(by)[i2]])
+#     y$comb_id=''
+#     for (i in 1:length(by)){
+#       if(i!=i2){
+#         y$comb_id=paste(y$comb_id,'and',y[,names(by)[i]])
+#       }
+#     }
+#
+#     values=unique(y$comb_id)
+#     y$pval=NA
+#     y$Cohen.d=NA
+#     for(value in values){
+#       i=which(y$comb_id==value)
+#       t=y[i,]
+#       y$pval[i]=pval(m=t[,name],sdev=t$sd,n=t$n,agg.data=TRUE)
+#       y$Cohen.d[i]=Cohen.d(m=t[,name],sdev=t$sd,n=t$n,agg.data=TRUE)
+#     }
+#
+#     y$comb_id=NULL
+#   }
+#
+#
+#
+#
+#   return(y)
+#
+# }
 
 
 #' Sorts string vector by numeric characters
