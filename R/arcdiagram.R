@@ -1,4 +1,3 @@
-library(plotly)
 
 #' Interactive arc-diagram
 #'
