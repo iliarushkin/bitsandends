@@ -77,20 +77,29 @@ lin=function(x,y){
 
 #' Sampling for k-fold validation
 #'
-#' @param ndata the number of rows in the data
-#' @param k number of folds
-#' @param repetitions number of repetitions of the k-fold procedure
+#' @param ndata the number of rows in the data. If a vector is given, will use the length. If a matrix or a dataframe is given, will use number of rows.
+#' @param k number of folds, positive integer.
+#' @param repetitions number of repetitions of the k-fold procedure, positive integer.
 #'
-#' @return a list of \code{k*repetitions} components, ieach of which is a vector of randomly sampled indices of length close to \code{ndata/k}.
+#' @return a list of \code{k*repetitions} components, ieach of which is a list of two vectors: indices of the training subset and of the validation subset.
+#' @details Setting k=1 is understood as no folding: returned training and validation subsets will be both the full set.
 #' @export
 #'
 #' @examples
-kfoldval=function(ndata,k=5,repetitions=3){
+kfoldind=function(ndata,k=5,repetitions=3){
+
+  if(!is.null(dim(ndata))){
+    ndata=nrow(ndata)
+  }else if(length(ndata)>1){
+    ndata=length(ndata)
+  }
+
+  dataind=1:ndata
 
   i=list()
   for(r in 1:repetitions){
 
-    ind=sample(1:ndata)
+    ind=sample(dataind)
 
     chunksize=round(ndata/k)
 
@@ -103,7 +112,21 @@ kfoldval=function(ndata,k=5,repetitions=3){
     })
     )
   }
-  return(i)
+
+
+    res=lapply(i,function(j){
+      if (k==1){
+        training=dataind
+      }else{
+        training=dataind[!(dataind %in% j)]
+      }
+
+      list(training=training,validation=j)
+
+    })
+
+
+  return(res)
 
 }
 

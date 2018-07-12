@@ -2,7 +2,7 @@
 
 export(Cohen.d)
 export(arcd)
-export(kfoldval)
+export(kfoldind)
 export(kmeans1)
 export(lin)
 export(plotlyridges)
