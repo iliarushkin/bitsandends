@@ -1,8 +1,17 @@
+#' Clean Knowledge Graph
+#'
+#' Removes spurious and duplicated rows and checks for the absence of loops
+#'
+#' @param kgraph a dataframe or matrix of two columns.
+#'
+#' @return the cleaned version of  of the input, if no loops are found. If there are loops, will message and return NULL
+#' @export
+#'
+#' @examples
 clean_kgraph=function(kgraph){
 
   if(ncol(kgraph)!=2){
-    cat('kgraph must have two columns.\n')
-    return(NULL)
+    stop('kgraph must have two columns.\n')
   }
 
   #Remove empty rows:

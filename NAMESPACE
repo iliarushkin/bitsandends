@@ -2,6 +2,7 @@
 
 export(Cohen.d)
 export(arcd)
+export(clean_kgraph)
 export(kfoldind)
 export(kmeans1)
 export(lin)
