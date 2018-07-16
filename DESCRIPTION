@@ -1,11 +1,10 @@
 Package: bitsandends
 Type: Package
-Title: What the Package Does (Title Case)
+Title: Various convenience functions
 Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
+Author: Ilia Rushkin
+Maintainer: Ilia Rushkin <iliarushkin@gmail.com>
+Description: A set of diverse convenience functions
 License: What license is it under?
 Encoding: UTF-8
 LazyData: true
