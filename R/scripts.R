@@ -81,7 +81,7 @@ lin=function(x,y){
 #' @param k number of folds, positive integer.
 #' @param repetitions number of repetitions of the k-fold procedure, positive integer.
 #'
-#' @return a list of \code{k*repetitions} components, ieach of which is a list of two vectors: indices of the training subset and of the validation subset.
+#' @return a list of \code{k*repetitions} components, each of which is a list of two vectors: indices of the training subset and of the validation subset.
 #' @details Setting k=1 is understood as no folding: returned training and validation subsets will be both the full set.
 #' @export
 #'

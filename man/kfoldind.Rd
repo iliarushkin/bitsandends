@@ -14,7 +14,7 @@ kfoldind(ndata, k = 5, repetitions = 3)
 \item{repetitions}{number of repetitions of the k-fold procedure, positive integer.}
 }
 \value{
-a list of \code{k*repetitions} components, ieach of which is a list of two vectors: indices of the training subset and of the validation subset.
+a list of \code{k*repetitions} components, each of which is a list of two vectors: indices of the training subset and of the validation subset.
 }
 \description{
 Sampling for k-fold validation

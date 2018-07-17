@@ -3,6 +3,7 @@
 export(Cohen.d)
 export(arcd)
 export(clean_kgraph)
+export(gridclassifier)
 export(kfoldind)
 export(kmeans1)
 export(lin)
