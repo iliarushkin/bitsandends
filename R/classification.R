@@ -10,10 +10,11 @@
 #' @param repetitions a positive integer, the number of repetitions in the k-fold validation
 #' @param verbose a logical, whether or not to print out progress
 #' @details All parameters of the classifier model, out of which the grid will be formed, are assumed to be passed to the classifier as single values (not vectors, matrices, etc). If you want to grid-search parameters that your model takes as, say, a vector, or if your model takes the formula and the data as arguments with different names, use a wrapper function for your model.
-#' @return a list with components, all of them indexed in the same order: \item{class.err}{matrix of classification errors per class (each class is a column)}
+#' @return a list with components, indexed in the same order: \item{class.err}{matrix of classification errors per class (each class is a column)}
 #' \item{total.err}{a vector of total classification errors}
 #' \item{confs}{a list of confusion matrices}
-#' \item{gridparam}{a data frame of the grid of the parameters. It provides the connection between the index (common for all list components) and the parameter values.}
+#' \item{gridparam}{a data frame of the grid of the parameters. It provides the connection between the index (common for the preceding list components) and the parameter values.}
+#' \item{kfold}{a list containing the number of folds and repetitions in the kfold validation}
 #' @export
 #'
 #' @examples
@@ -42,7 +43,7 @@ gridclassifier=function(data,model,formula,params,k=1,repetitions=1,verbose=FALS
   kf=bitsandends::kfoldind(nrow(data),k=k,repetitions=repetitions)
 
   gridparam=expand.grid(params, stringsAsFactors = FALSE)
-
+  tic=proc.time()[3]
   confs=lapply(1:nrow(gridparam),function(i){
 
     conf.matrix=rep(list(NULL),length(kf))
@@ -62,6 +63,7 @@ gridclassifier=function(data,model,formula,params,k=1,repetitions=1,verbose=FALS
 
     if(verbose){
       cat('Done with combination',i,'out of',nrow(gridparam),'\n')
+      cat(round(proc.time()[3]-tic),'seconds \n')
     }
     return(conf.matrix)
 
@@ -76,6 +78,6 @@ gridclassifier=function(data,model,formula,params,k=1,repetitions=1,verbose=FALS
     1-sum(diag(conf))/sum(conf)
   })
 
-  return(list(class.err=class.err, total.err=total.err,confs=confs, gridparam=gridparam))
+  return(list(class.err=class.err, total.err=total.err,confs=confs, gridparam=gridparam, kfold=list(k=k,repetitions=repetitions)))
 
 }

@@ -23,10 +23,11 @@ gridclassifier(data, model, formula, params, k = 1, repetitions = 1,
 \item{verbose}{a logical, whether or not to print out progress}
 }
 \value{
-a list with components, all of them indexed in the same order: \item{class.err}{matrix of classification errors per class (each class is a column)}
+a list with components, indexed in the same order: \item{class.err}{matrix of classification errors per class (each class is a column)}
 \item{total.err}{a vector of total classification errors}
 \item{confs}{a list of confusion matrices}
-\item{gridparam}{a data frame of the grid of the parameters. It provides the connection between the index (common for all list components) and the parameter values.}
+\item{gridparam}{a data frame of the grid of the parameters. It provides the connection between the index (common for the preceding list components) and the parameter values.}
+\item{kfold}{a list containing the number of folds and repetitions in the kfold validation}
 }
 \description{
 Given a vector of values of parameters, return classification errors and confusion matrices of a classifier model for each combination.
