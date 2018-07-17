@@ -5,7 +5,7 @@
 \title{Grid-search through parameters of a classifier model}
 \usage{
 gridclassifier(data, model, formula, params, k = 1, repetitions = 1,
-  verbose = FALSE)
+  verbose = FALSE, writeto = NULL)
 }
 \arguments{
 \item{data}{the data frame of data, containing the predictor columns and the outcome column}
@@ -21,6 +21,8 @@ gridclassifier(data, model, formula, params, k = 1, repetitions = 1,
 \item{repetitions}{a positive integer, the number of repetitions in the k-fold validation}
 
 \item{verbose}{a logical, whether or not to print out progress}
+
+\item{writeto}{if not NULL, will rewrite results cumulatively after each combination of parameters is finished to the file with this path.}
 }
 \value{
 a list with components, indexed in the same order: \item{class.err}{matrix of classification errors per class (each class is a column)}

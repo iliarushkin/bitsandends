@@ -9,6 +9,7 @@
 #' @param k a positive integer, the number of folds in the k-fold validation
 #' @param repetitions a positive integer, the number of repetitions in the k-fold validation
 #' @param verbose a logical, whether or not to print out progress
+#' @param writeto if not NULL, will rewrite results cumulatively after each combination of parameters is finished to the file with this path.
 #' @details All parameters of the classifier model, out of which the grid will be formed, are assumed to be passed to the classifier as single values (not vectors, matrices, etc). If you want to grid-search parameters that your model takes as, say, a vector, or if your model takes the formula and the data as arguments with different names, use a wrapper function for your model.
 #' @return a list with components, indexed in the same order: \item{class.err}{matrix of classification errors per class (each class is a column)}
 #' \item{total.err}{a vector of total classification errors}
@@ -34,7 +35,7 @@
 #'
 #'#Find classification errors for each combination of parameters
 #' ans=gridclassifier(data=data, model=mysvm, formula=formula, params=params)
-gridclassifier=function(data,model,formula,params,k=1,repetitions=1,verbose=FALSE){
+gridclassifier=function(data,model,formula,params,k=1,repetitions=1,verbose=FALSE, writeto=NULL){
 
   temp=all.vars(formula)
   outcome_var=temp[1]
@@ -44,7 +45,10 @@ gridclassifier=function(data,model,formula,params,k=1,repetitions=1,verbose=FALS
 
   gridparam=expand.grid(params, stringsAsFactors = FALSE)
   tic=proc.time()[3]
-  confs=lapply(1:nrow(gridparam),function(i){
+
+  confs=rep(list(NULL),nrow(gridparam))
+
+  for(i in 1:nrow(gridparam)){
 
     conf.matrix=rep(list(NULL),length(kf))
 
@@ -65,11 +69,19 @@ gridclassifier=function(data,model,formula,params,k=1,repetitions=1,verbose=FALS
       cat('Done with combination',i,'out of',nrow(gridparam),'\n')
       cat(round(proc.time()[3]-tic),'seconds \n')
     }
-    return(conf.matrix)
+    confs[[i]]=conf.matrix
+    if(!is.null(writeto)){
+      saveRDS(c(class.errors(confs[1:i]),list(gridparam=gridparam[1:i,],kfold=list(k=k,repetitions=repetitions))),file=writeto)
+    }
 
-  })
+  }
+
+  return(c(class.errors(confs),list(gridparam=gridparam, kfold=list(k=k,repetitions=repetitions))))
+
+}
 
 
+class.errors=function(confs){
   class.err=do.call(rbind,lapply(confs,function(conf){
     c(conf[2,1]/(conf[1,1]+conf[2,1]),conf[1,2]/(conf[1,2]+conf[2,2]))
   }))
@@ -78,6 +90,5 @@ gridclassifier=function(data,model,formula,params,k=1,repetitions=1,verbose=FALS
     1-sum(diag(conf))/sum(conf)
   })
 
-  return(list(class.err=class.err, total.err=total.err,confs=confs, gridparam=gridparam, kfold=list(k=k,repetitions=repetitions)))
-
+  return(list(class.err=class.err,total.err=total.err,confs=confs))
 }
