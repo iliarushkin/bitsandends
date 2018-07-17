@@ -4,7 +4,8 @@
 \alias{gridclassifier}
 \title{Grid-search through parameters of a classifier model}
 \usage{
-gridclassifier(data, model, formula, params, k = 1, repetitions = 1)
+gridclassifier(data, model, formula, params, k = 1, repetitions = 1,
+  verbose = FALSE)
 }
 \arguments{
 \item{data}{the data frame of data, containing the predictor columns and the outcome column}
@@ -18,6 +19,8 @@ gridclassifier(data, model, formula, params, k = 1, repetitions = 1)
 \item{k}{a positive integer, the number of folds in the k-fold validation}
 
 \item{repetitions}{a positive integer, the number of repetitions in the k-fold validation}
+
+\item{verbose}{a logical, whether or not to print out progress}
 }
 \value{
 a list with components, all of them indexed in the same order: \item{class.err}{matrix of classification errors per class (each class is a column)}

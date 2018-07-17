@@ -8,6 +8,7 @@
 #' @param params a list, each element is named as a parameter to be passed to the model and contains a vector of values to try.
 #' @param k a positive integer, the number of folds in the k-fold validation
 #' @param repetitions a positive integer, the number of repetitions in the k-fold validation
+#' @param verbose a logical, whether or not to print out progress
 #' @details All parameters of the classifier model, out of which the grid will be formed, are assumed to be passed to the classifier as single values (not vectors, matrices, etc). If you want to grid-search parameters that your model takes as, say, a vector, or if your model takes the formula and the data as arguments with different names, use a wrapper function for your model.
 #' @return a list with components, all of them indexed in the same order: \item{class.err}{matrix of classification errors per class (each class is a column)}
 #' \item{total.err}{a vector of total classification errors}
@@ -32,7 +33,7 @@
 #'
 #'#Find classification errors for each combination of parameters
 #' ans=gridclassifier(data=data, model=mysvm, formula=formula, params=params)
-gridclassifier=function(data,model,formula,params,k=1,repetitions=1){
+gridclassifier=function(data,model,formula,params,k=1,repetitions=1,verbose=FALSE){
 
   temp=all.vars(formula)
   outcome_var=temp[1]
@@ -58,6 +59,10 @@ gridclassifier=function(data,model,formula,params,k=1,repetitions=1){
 
     conf.matrix=Reduce('+',conf.matrix)
     conf.matrix=conf.matrix/length(kf)
+
+    if(verbose){
+      cat('Done with combination',i,'out of',nrow(gridparam),'\n')
+    }
     return(conf.matrix)
 
   })
