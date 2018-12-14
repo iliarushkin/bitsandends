@@ -142,10 +142,10 @@ arcd=function(links,nodes
 
 
   if(orientation=='h'){
-    xaxis=list(showline=FALSE,showgrid=FALSE,zeroline=FALSE,showticklabels=TRUE)
+    xaxis=list(showline=FALSE,showgrid=TRUE,zeroline=FALSE,showticklabels=TRUE)
     yaxis=list(showline=FALSE,showgrid=FALSE,zeroline=TRUE,showticklabels=FALSE)
   }else{
-    yaxis=list(showline=FALSE,showgrid=FALSE,zeroline=FALSE,showticklabels=TRUE)
+    yaxis=list(showline=FALSE,showgrid=TRUE,zeroline=FALSE,showticklabels=TRUE)
     xaxis=list(showline=FALSE,showgrid=FALSE,zeroline=TRUE,showticklabels=FALSE)
   }
   p=plotly::layout(p,title=''

@@ -7,10 +7,11 @@
 arcd(links, nodes, link.source = "source", link.target = "target",
   link.side = NULL, link.color = NULL, link.value = "value",
   node.value = "value", node.label = "label", node.ID = "reindex",
-  node.color = NULL, scale = 0.5, max.node.size = 40, min.node.size = 2,
-  max.link.width = 30, min.link.width = 0.5, link.min.value = NULL,
-  link.value.prefix = "jumps", node.value.prefix = "landings",
-  remove.jump.size = NULL, orientation = "h")
+  node.color = NULL, scale = 0.5, max.node.size = 40,
+  min.node.size = 2, max.link.width = 30, min.link.width = 0.5,
+  link.min.value = NULL, link.value.prefix = "jumps",
+  node.value.prefix = "landings", remove.jump.size = NULL,
+  orientation = "h")
 }
 \arguments{
 \item{links}{a data-frame of links, contains three, sources and targets (populated with numeric node coordinates that serve as node IDs) and values of links. May contain other metadata}
