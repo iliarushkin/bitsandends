@@ -11,7 +11,7 @@ arcd(links, nodes, link.source = "source", link.target = "target",
   min.node.size = 2, max.link.width = 30, min.link.width = 0.5,
   link.min.value = NULL, link.value.prefix = "jumps",
   node.value.prefix = "landings", remove.jump.size = NULL,
-  orientation = "h")
+  orientation = "h", show_start = FALSE)
 }
 \arguments{
 \item{links}{a data-frame of links, contains three, sources and targets (populated with numeric node coordinates that serve as node IDs) and values of links. May contain other metadata}
@@ -54,7 +54,9 @@ arcd(links, nodes, link.source = "source", link.target = "target",
 
 \item{remove.jump.size}{a value or a vector of values. Links with jump size (target minus source) in \code{remove.jump.size} will be ignored. If NULL, no effect.}
 
-\item{orientation}{if 'h', the diagram will be horizontal, otherwise vertival. Only the first character is checked, case-insensitive.}
+\item{orientation}{if 'h', the diagram will be horizontal, otherwise vertical. Only the first character is checked, case-insensitive.}
+
+\item{show.start}{logical, whether or not to separate course start from outside by a dashed line.}
 }
 \value{
 a plotly object

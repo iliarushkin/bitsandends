@@ -21,7 +21,8 @@
 #' @param link.value.prefix prefix to use in link hover labels
 #' @param node.value.prefix prefix to use in node hover labels
 #' @param remove.jump.size a value or a vector of values. Links with jump size (target minus source) in \code{remove.jump.size} will be ignored. If NULL, no effect.
-#' @param orientation if 'h', the diagram will be horizontal, otherwise vertival. Only the first character is checked, case-insensitive.
+#' @param orientation if 'h', the diagram will be horizontal, otherwise vertical. Only the first character is checked, case-insensitive.
+#' @param show.start logical, whether or not to separate course start from outside by a dashed line.
 #'
 #' @return a plotly object
 #' @export
@@ -35,12 +36,31 @@ arcd=function(links,nodes
               ,node.value.prefix='landings'
               ,remove.jump.size=NULL
               ,orientation='h'
+              ,show_start=FALSE
               ){
 
   orientation=tolower(substr(orientation,1,1))
 
   p=plotly::plot_ly()
-
+  if(show.start){
+    if(orientation=='h'){
+      p=p%>%add_trace(x=rep(0.5,2), y=c(scale,-scale),
+                    type='scatter', mode='lines',
+                    line=list(width=2, dash='dash', color='black'),
+                    name='course start',
+                    showlegend=FALSE,
+                    hoverinfo='name'
+                    )
+    }else{
+      p=p%>%add_trace(y=rep(0.5,2), x=c(scale,-scale),
+                      type='scatter', mode='lines',
+                      line=list(width=2, dash='dash', color='black'),
+                      name='course start',
+                      showlegend=FALSE,
+                      hoverinfo='name'
+      )
+    }
+  }
 
   link.value.sum=sum(links[,link.value])
   if(!is.null(remove.jump.size)){
