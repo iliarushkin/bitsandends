@@ -36,7 +36,7 @@ arcd=function(links,nodes
               ,node.value.prefix='landings'
               ,remove.jump.size=NULL
               ,orientation='h'
-              ,show_start=FALSE
+              ,show.start=FALSE
               ){
 
   orientation=tolower(substr(orientation,1,1))

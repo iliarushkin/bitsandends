@@ -11,7 +11,7 @@ arcd(links, nodes, link.source = "source", link.target = "target",
   min.node.size = 2, max.link.width = 30, min.link.width = 0.5,
   link.min.value = NULL, link.value.prefix = "jumps",
   node.value.prefix = "landings", remove.jump.size = NULL,
-  orientation = "h", show_start = FALSE)
+  orientation = "h", show.start = FALSE)
 }
 \arguments{
 \item{links}{a data-frame of links, contains three, sources and targets (populated with numeric node coordinates that serve as node IDs) and values of links. May contain other metadata}
