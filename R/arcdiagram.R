@@ -39,12 +39,14 @@ arcd=function(links,nodes
               ,show.start=FALSE
               ){
 
+  require(plotly)
+
   orientation=tolower(substr(orientation,1,1))
 
   p=plotly::plot_ly()
   if(show.start){
     if(orientation=='h'){
-      p=p%>%add_trace(x=rep(0.5,2), y=c(scale,-scale),
+      p=p%>%plotly::add_trace(x=rep(0.5,2), y=c(scale,-scale),
                     type='scatter', mode='lines',
                     line=list(width=2, dash='dash', color='black'),
                     name='course start',
@@ -52,7 +54,7 @@ arcd=function(links,nodes
                     hoverinfo='name'
                     )
     }else{
-      p=p%>%add_trace(y=rep(0.5,2), x=c(scale,-scale),
+      p=p%>%plotly::add_trace(y=rep(0.5,2), x=c(scale,-scale),
                       type='scatter', mode='lines',
                       line=list(width=2, dash='dash', color='black'),
                       name='course start',
