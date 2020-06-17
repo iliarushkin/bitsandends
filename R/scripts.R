@@ -332,3 +332,122 @@ sortnum=function(x,...){
 
 }
 
+#' pU
+#'
+#'Pretty units, to create strings like "1 dog" but "2 dogs", where the singular or plural of the unit "dog" is governed based on the number
+#'
+#' @param unit string
+#' @param n vector of governing number
+#' @param units plural for the unit. If NULL, will be formed by adding 's' to unit.
+#'
+#' @return vector of strings
+#' @export
+#'
+#' @examples
+pU=function(unit, n, units=NULL){
+  
+  if(is.null(units)) units=paste0(unit,'s')
+  
+  ifelse(n==1, unit, units)
+}
+
+#' pN
+#' 
+#' Pretty number. Rounding if r is not NULL. If abs(x) is less than 1.5, rounding changes keeping 2 significant digits.
+#'
+#' @param x vector of number
+#' @param suff suffix to add
+#' @param r number of digits after the decimal point. If NULL - no rounding.
+#'
+#' @return vector of strings
+#' @export
+#'
+#' @examples
+pN=function(x, suff='', r=NULL){
+  if(is.null(r)){
+    paste0(prettyNum(x, big.mark = ','), suff)
+  }else{
+    
+    y=round(x,r)
+    temp=(abs(x)<1.5)
+    y[temp]=signif(x[temp],2)
+    
+    paste0(prettyNum(y, big.mark = ','), suff)
+  }
+}
+
+
+#' truncateString
+#' 
+#' A cosmetic function for truncating a string to n characters, adding "..." if needed.
+#'
+#' @param x vector of strings
+#' @param n max number of characters
+#'
+#' @return vector of strings
+#' @export
+#'
+#' @examples
+truncateString=function(x,n=15){
+  ind=which(nchar(x)>n)
+  if(length(ind)>0){
+    x[ind]=paste0(substr(x[ind],1,n),'...')
+  }
+  
+  return(x)
+}
+
+#' isnothing
+#' 
+#' Shorthand for checking if an object is nothing, e.g. of length 0 (including NULL), or NA, or '' or 0.
+#'
+#' @param x If length is greater than 1, will return TRUE if at least one element is nothing.
+#'@param nothing list of values that count as nothing (used in addition to NA and the condition of positive length)
+#'
+#' @return TRUE or FALSE
+#' @export
+#'
+#' @examples
+isnothing=function(x, nothing=list(0,'')){
+  if(length(x)==0) return(TRUE)
+  if(any(is.na(x))) return(TRUE)
+  for(j in seq_along(nothing)){
+    if(any(x==nothing[[j]])) return(TRUE)
+  }
+  
+  return(FALSE)
+}
+
+#' getmode
+#' 
+#' Calculate the mode of a vector
+#'
+#' @param x - vector.
+#'
+#' @return
+#' @export
+#'
+#' @examples
+getmode=function(x, na.rm=FALSE){
+  y=unique(x)
+  if(na.rm) y=y[!is.na(y)]
+  y[which.max(tabulate(match(x,y)))]
+}
+
+
+
+
+#' col_add_a
+#'
+#'Wrapper for adding transparency to a color
+#'
+#' @param col color codes
+#' @param a transparency value on 0-to-1 scale
+#'
+#' @return
+#' @export
+#'
+#' @examples
+col_add_a=function(col, a=0.5){
+  rgb(t(col2rgb(col)),alpha=a*255, maxColorValue = 255)
+}
