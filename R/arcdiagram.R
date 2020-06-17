@@ -159,7 +159,7 @@ arcd=function(links,nodes
                   ,legendgroup=1
                   ,name='jumps'
                   ,hoverinfo='text'
-                  ,text=paste0(nodes[,node.label],'<br>',node.value.prefix,': ',prettyNum(nodes[,node.value],big.mar=','),' (',signif(100*nodes[,node.value]/sum(nodes[,node.value]),3),'%)')
+                  ,text=paste0(nodes[,node.label],'<br>',node.value.prefix,': ',prettyNum(nodes[,node.value],big.mark=','),' (',signif(100*nodes[,node.value]/sum(nodes[,node.value]),3),'%)')
   )
 
 
