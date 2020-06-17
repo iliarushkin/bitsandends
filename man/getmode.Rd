@@ -11,6 +11,12 @@ getmode(x, na.rm = FALSE)
 
 \item{na.rm}{logical, whether to ignore NAs in x.}
 }
+\value{
+one element of x
+}
 \description{
 Calculate the mode of a vector
+}
+\examples{
+#
 }

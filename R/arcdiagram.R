@@ -27,7 +27,7 @@
 #' @return a plotly object
 #' @export
 #'
-#' @examples
+#' @examples #
 arcd=function(links,nodes
               ,link.source='source', link.target='target', link.side=NULL,link.color=NULL, link.value='value'
               ,node.value='value',node.label='label',node.ID='reindex',node.color=NULL

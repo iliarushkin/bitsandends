@@ -64,3 +64,6 @@ a plotly object
 \description{
 Interactive arc-diagram
 }
+\examples{
+#
+}

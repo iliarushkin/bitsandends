@@ -7,7 +7,7 @@
 #' @return the cleaned version of  of the input, if no loops are found. If there are loops, will message and return NULL
 #' @export
 #'
-#' @examples
+#' @examples #
 clean_kgraph=function(kgraph){
 
   if(ncol(kgraph)!=2){

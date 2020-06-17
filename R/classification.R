@@ -18,7 +18,7 @@
 #' \item{kfold}{a list containing the number of folds and repetitions in the kfold validation}
 #' @export
 #'
-#' @examples
+#' @examples #
 # #Create fake data set and formula of prediction
 # data=data.frame(x=sample(c(0,1),100,replace=TRUE),p1=runif(100),p2=runif(100))
 # data$x=factor(data$x)

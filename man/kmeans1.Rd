@@ -20,3 +20,6 @@ Additional elements are also addded to the list: \code{frac} is the cluster size
 \description{
 Uses \code{kmeans} and then renames the clusters so that they are arranged in the increasing order of means
 }
+\examples{
+#
+}

@@ -15,7 +15,7 @@
 #' @return a tibble with columns t (bin-end times), n (value)
 #' @export
 #'
-#' @examples
+#' @examples #
 timeline=function(dat, xcol='t', trange=NULL, summarize='n', ycol=NULL, step=15, units='mins', crop=FALSE, time_zone='UTC'){
 
   require(lubridate)
@@ -107,8 +107,12 @@ timeline=function(dat, xcol='t', trange=NULL, summarize='n', ycol=NULL, step=15,
 #' @return a tibble with columns t (bin-end times), n - count of ongoing events in the bin
 #' @export
 #'
-#' @examples
+#' @examples #
 timeline_intervals=function(dat, startcol='start_time', endcol='end_time', trange=NULL, step=15, units='mins', time_zone='UTC'){
+
+  require(tidyverse)
+  require(lubridate)
+
   if(is.null(dat)) return(tibble(t=Sys.time()[0], n=numeric(0)))
 
   names(dat)[names(dat)==startcol]='s'
@@ -151,7 +155,7 @@ timeline_intervals=function(dat, startcol='start_time', endcol='end_time', trang
 #' @return plotly object
 #' @export
 #'
-#' @examples
+#' @examples #
 timeline_plot=function(dat,
                        smooth_bw=0,
                        smooth_kernel='box',
@@ -166,6 +170,7 @@ timeline_plot=function(dat,
 
   require(tidyverse)
   require(plotly)
+  require(lubridate)
 
   if(is.null(dat) || nrow(dat)==0) return()
 

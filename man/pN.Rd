@@ -19,3 +19,6 @@ vector of strings
 \description{
 Pretty number. Rounding if r is not NULL. If abs(x) is less than 1.5, rounding changes keeping 2 significant digits.
 }
+\examples{
+#
+}

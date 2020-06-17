@@ -22,3 +22,6 @@ Sampling for k-fold validation
 \details{
 Setting k=1 is understood as no folding: returned training and validation subsets will be both the full set.
 }
+\examples{
+#
+}

@@ -25,3 +25,6 @@ the Welch's t-test p-value
 \description{
 Can be calculated from the provided samples. Alternatively, if either one of the samples is NULL, can be calculated from the provided means, standard deviations and sample sizes
 }
+\examples{
+#
+}

@@ -15,3 +15,6 @@ the cleaned version of  of the input, if no loops are found. If there are loops,
 \description{
 Removes spurious and duplicated rows and checks for the absence of loops
 }
+\examples{
+#
+}

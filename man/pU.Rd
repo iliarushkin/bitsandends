@@ -19,3 +19,6 @@ vector of strings
 \description{
 Pretty units, to create strings like "1 dog" but "2 dogs", where the singular or plural of the unit "dog" is governed based on the number
 }
+\examples{
+#
+}

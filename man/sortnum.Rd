@@ -17,3 +17,6 @@ sorted vector of strings
 \description{
 Numeric characters in each vector element are concatenated and treated as integers, and the sorting is done by these intergers. E.g. \code{c('a10','a2','a1')} would be sorted as \code{c('a1','a2','a10')}.
 }
+\examples{
+#
+}

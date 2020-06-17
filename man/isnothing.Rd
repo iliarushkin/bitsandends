@@ -17,3 +17,6 @@ TRUE or FALSE
 \description{
 Shorthand for checking if an object is nothing, e.g. of length 0 (including NULL), or NA, or '' or 0.
 }
+\examples{
+#
+}

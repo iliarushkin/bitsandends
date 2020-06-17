@@ -37,3 +37,6 @@ Given a vector of values of parameters, return classification errors and confusi
 \details{
 All parameters of the classifier model, out of which the grid will be formed, are assumed to be passed to the classifier as single values (not vectors, matrices, etc). If you want to grid-search parameters that your model takes as, say, a vector, or if your model takes the formula and the data as arguments with different names, use a wrapper function for your model.
 }
+\examples{
+#
+}

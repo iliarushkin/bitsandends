@@ -11,7 +11,7 @@
 #' Additional elements are also addded to the list: \code{frac} is the cluster size as a fraction of the total, \code{cluster_sd} is the standard deviations of clusters and \code{centers_se} is the standard error of the cluster centers.
 #' @export
 #'
-#' @examples
+#' @examples #
 kmeans1=function(x,centers,...){
 
   if(length(unique(x))<centers){
@@ -51,7 +51,7 @@ kmeans1=function(x,centers,...){
 #' @return a list with elements: \item{a}{intercept}\item{k}{slope}\item{r2}{R-squared}\item{r}{correlation coefficient}\item{r.sd}{standard deviation of the correlation coefficient}
 #' @export
 #'
-#' @examples
+#' @examples #
 lin=function(x,y){
   ind=which(!(is.na(x)|is.na(y)))
   if(length(ind)<2){return(list(a=NA,k=NA,r2=NA,r=NA,r.sd=NA))}
@@ -85,7 +85,7 @@ lin=function(x,y){
 #' @details Setting k=1 is understood as no folding: returned training and validation subsets will be both the full set.
 #' @export
 #'
-#' @examples
+#' @examples #
 kfoldind=function(ndata,k=5,repetitions=3){
 
   if(!is.null(dim(ndata))){
@@ -181,7 +181,7 @@ cor1=function(x,y,only=NULL){
 #' @return the Welch's t-test p-value
 #' @export
 #'
-#' @examples
+#' @examples #
 pval=function(x1=NULL,x2=NULL,two.tailed=TRUE,m,sdev,n){
   if(is.null(x1)|is.null(x2)){
 
@@ -218,7 +218,7 @@ pval=function(x1=NULL,x2=NULL,two.tailed=TRUE,m,sdev,n){
 #' @return Cohen's d
 #' @export
 #'
-#' @examples
+#' @examples #
 Cohen.d=function(x1=NULL,x2=NULL,m,sdev,n){
 
   if(is.null(x1)|is.null(x2)){
@@ -319,7 +319,7 @@ Cohen.d=function(x1=NULL,x2=NULL,m,sdev,n){
 #' @return sorted vector of strings
 #' @export
 #'
-#' @examples
+#' @examples #
 sortnum=function(x,...){
   options(warn=-1)
   y=x
@@ -343,7 +343,7 @@ sortnum=function(x,...){
 #' @return vector of strings
 #' @export
 #'
-#' @examples
+#' @examples #
 pU=function(unit, n, units=NULL){
 
   if(is.null(units)) units=paste0(unit,'s')
@@ -362,7 +362,7 @@ pU=function(unit, n, units=NULL){
 #' @return vector of strings
 #' @export
 #'
-#' @examples
+#' @examples #
 pN=function(x, suff='', r=NULL){
   if(is.null(r)){
     paste0(prettyNum(x, big.mark = ','), suff)
@@ -387,7 +387,7 @@ pN=function(x, suff='', r=NULL){
 #' @return vector of strings
 #' @export
 #'
-#' @examples
+#' @examples #
 truncateString=function(x,n=15){
   ind=which(nchar(x)>n)
   if(length(ind)>0){
@@ -407,7 +407,7 @@ truncateString=function(x,n=15){
 #' @return TRUE or FALSE
 #' @export
 #'
-#' @examples
+#' @examples #
 isnothing=function(x, nothing=list(0,'')){
   if(length(x)==0) return(TRUE)
   if(any(is.na(x))) return(TRUE)
@@ -425,10 +425,10 @@ isnothing=function(x, nothing=list(0,'')){
 #' @param x - vector.
 #' @param na.rm logical, whether to ignore NAs in x.
 #'
-#' @return
+#' @return one element of x
 #' @export
 #'
-#' @examples
+#' @examples #
 getmode=function(x, na.rm=FALSE){
   y=unique(x)
   if(na.rm) y=y[!is.na(y)]
@@ -445,10 +445,10 @@ getmode=function(x, na.rm=FALSE){
 #' @param col color codes
 #' @param a transparency value on 0-to-1 scale
 #'
-#' @return
+#' @return color codes
 #' @export
 #'
-#' @examples
+#' @examples #
 col_add_a=function(col, a=0.5){
   rgb(t(col2rgb(col)),alpha=a*255, maxColorValue = 255)
 }

@@ -17,3 +17,6 @@ a list with elements: \item{a}{intercept}\item{k}{slope}\item{r2}{R-squared}\ite
 \description{
 A linear regression y=kx+a
 }
+\examples{
+#
+}

@@ -16,7 +16,7 @@
 #' @return plotly object
 #' @export
 #'
-#' @examples
+#' @examples #
 pyramid_plot=function(dat, yticks=NULL, xtitle='', ytitle='', yname=NULL,
                       palette=c('tomato', 'steelblue'),
                       plot_bgcolor='#ECF0F5', paper_bgcolor='#FCFCFC'
@@ -79,8 +79,6 @@ pyramid_plot=function(dat, yticks=NULL, xtitle='', ytitle='', yname=NULL,
       plot_bgcolor=plot_bgcolor,
       paper_bgcolor=paper_bgcolor
     )%>%config(displayModeBar=FALSE)
-
-
   return(fig)
 
 }

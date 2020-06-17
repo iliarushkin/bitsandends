@@ -11,6 +11,12 @@ col_add_a(col, a = 0.5)
 
 \item{a}{transparency value on 0-to-1 scale}
 }
+\value{
+color codes
+}
 \description{
 Wrapper for adding transparency to a color
+}
+\examples{
+#
 }

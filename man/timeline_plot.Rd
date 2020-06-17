@@ -46,3 +46,6 @@ plotly object
 \description{
 Create a timeline plot with one (n(t)) or two (if n_base is present in the data) lines.
 }
+\examples{
+#
+}

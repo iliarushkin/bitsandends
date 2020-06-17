@@ -56,3 +56,6 @@ a plotly object
 \description{
 Mimicks \code{ggridges} but using \code{plotly} so that the output is interactive
 }
+\examples{
+#
+}

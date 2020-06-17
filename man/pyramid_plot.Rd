@@ -31,3 +31,6 @@ plotly object
 \description{
 Create a population pyramid plot. Traditionally, x-axis is gender and y-axis is age, so even though in this plot they both can have other names and values, we use "age" and "gender" for column names.
 }
+\examples{
+#
+}

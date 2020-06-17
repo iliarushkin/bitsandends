@@ -17,3 +17,6 @@ vector of strings
 \description{
 A cosmetic function for truncating a string to n characters, adding "..." if needed.
 }
+\examples{
+#
+}

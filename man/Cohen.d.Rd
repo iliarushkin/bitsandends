@@ -23,3 +23,6 @@ Cohen's d
 \description{
 Cohen's d of two samples
 }
+\examples{
+#
+}

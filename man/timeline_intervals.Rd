@@ -28,3 +28,6 @@ a tibble with columns t (bin-end times), n - count of ongoing events in the bin
 \description{
 An extension of timeline(summarize='n', crop=FALSE) for intervals rather than single events.
 }
+\examples{
+#
+}

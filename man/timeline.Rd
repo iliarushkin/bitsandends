@@ -33,3 +33,6 @@ a tibble with columns t (bin-end times), n (value)
 \description{
 A function for creating data for a timeline plot
 }
+\examples{
+#
+}
