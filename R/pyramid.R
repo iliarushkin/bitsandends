@@ -22,6 +22,9 @@ pyramid_plot=function(dat, yticks=NULL, xtitle='', ytitle='', yname=NULL,
                       plot_bgcolor='#ECF0F5', paper_bgcolor='#FCFCFC'
 ){
 
+  require(tidyverse)
+  require(plotly)
+
   if(is.null(yname)) yname=ytitle
   palette=palette[1:2]
   if(is.null(names(palette))) names(palette)=c('f','m')
