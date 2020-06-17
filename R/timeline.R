@@ -7,21 +7,22 @@
 #' @param trange range of times. If NULL, will be inferred from data.
 #' @param summarize one of the following strings: "n","n_distinct","sum", "mean", "weighted.mean", "median","max", to apply to idcol. For "n", ycol may be missing. For "weighted.mean" needs a column "w" of weights.
 #' @param ycol name of the column with values to summarize. Required to be not NULL if summarize is not "n"
-#' @param step - numeric, timestep to use in binning
-#' @param units - character, units for step, as in difftime(), e.g. 'mins' or 'days'
-#' @param crop - whether to crop range based on the values actually present in the data
+#' @param step numeric, timestep to use in binning
+#' @param units character, units for step, as in difftime(), e.g. 'mins' or 'days'
+#' @param crop whether to crop range based on the values actually present in the data
+#' @param time_zone time zone
 #'
 #' @return a tibble with columns t (bin-end times), n (value)
 #' @export
 #'
 #' @examples
 timeline=function(dat, xcol='t', trange=NULL, summarize='n', ycol=NULL, step=15, units='mins', crop=FALSE, time_zone='UTC'){
-  
+
   require(lubridate)
   require(tidyverse)
-  
+
   if((is.null(dat) || (nrow(dat)==0)) & is.null(trange)) return()
-  
+
   if(is.null(dat) || (nrow(dat)==0)){
     dat=tibble(t=trange, col_to_count=0)
     xcol='t'
@@ -30,45 +31,45 @@ timeline=function(dat, xcol='t', trange=NULL, summarize='n', ycol=NULL, step=15,
   }
   #Preserve the input trange
   trange0=trange
-  
+
   if(!is.null(ycol)){
     if(('col_to_count' %in% names(dat)) & (ycol!='col_to_count')) dat=dat%>%select(-col_to_count)
     names(dat)[names(dat)==ycol]='col_to_count'
   }
-  
+
   t=dat%>%pull(xcol)%>%with_tz(time_zone)
-  
+
   timestep=paste(step,units)
-  
+
   if(is.null(trange)){
     trange=c(floor_date(min(t, na.rm=TRUE), timestep), ceiling_date(max(t, na.rm=TRUE), timestep))
   }else{
     trange=as.POSIXct(trange)
   }
-  
+
   trange=trange%>%with_tz(time_zone)
-  
+
   trange=c(floor_date(trange[1]-lubridate::minutes(1), timestep), ceiling_date(trange[2]+lubridate::minutes(1),timestep))
-  
+
   if(crop & length(t)){
     trange[1]=floor_date(max(trange[1], min(t, na.rm=TRUE)), timestep)
     trange[2]=ceiling_date(min(trange[2], max(t, na.rm=TRUE)), timestep)
   }
-  
+
   ts=seq(trange[1], trange[2], by=timestep)
   ts_start=ts[-length(ts)]
   ts_end=ts[-1]
-  
+
   if(length(t)==0){
     return(tibble(t=ts_end, n=0))
   }
-  
+
   timebin=ceiling(as.numeric(difftime(t, ts[1], units=units))/step)
-  
+
   df=dat%>%
     mutate(t=with_tz(ts_end[timebin]))%>%
     group_by(t)
-  
+
   df=switch(summarize
             ,'n'=df%>%summarise(n=n())
             ,'n_distinct'=df%>%summarize(n=n_distinct(col_to_count))
@@ -80,19 +81,19 @@ timeline=function(dat, xcol='t', trange=NULL, summarize='n', ycol=NULL, step=15,
   )%>%
     complete(t=ts_end, fill=list(n=0))%>%
     mutate(t=lubridate::with_tz(t, time_zone))
-  
+
   if(!is.null(trange0)){
     df=df%>%filter(t>=trange0[1] & t<=trange0[2])
   }
-  
+
   df=df%>%arrange(t)
-  
+
   return(df)
-  
+
 }
 
 #' Timeline_intervals
-#' 
+#'
 #' An extension of timeline(summarize='n', crop=FALSE) for intervals rather than single events.
 #'
 #' @param dat tibble
@@ -101,6 +102,7 @@ timeline=function(dat, xcol='t', trange=NULL, summarize='n', ycol=NULL, step=15,
 #' @param trange range of times. If NULL, will be inferred from data.
 #' @param step numeric, timestep to use in binning
 #' @param units character, units for step, as in difftime(), e.g. 'mins' or 'days'
+#' @param time_zone time zone
 #'
 #' @return a tibble with columns t (bin-end times), n - count of ongoing events in the bin
 #' @export
@@ -108,11 +110,11 @@ timeline=function(dat, xcol='t', trange=NULL, summarize='n', ycol=NULL, step=15,
 #' @examples
 timeline_intervals=function(dat, startcol='start_time', endcol='end_time', trange=NULL, step=15, units='mins', time_zone='UTC'){
   if(is.null(dat)) return(tibble(t=Sys.time()[0], n=numeric(0)))
-  
+
   names(dat)[names(dat)==startcol]='s'
   names(dat)[names(dat)==endcol]='e'
-  
-  
+
+
   df=dat%>%
     timeline('s', trange=trange, step=step, units=units, summarize='n', crop=FALSE, time_zone=time_zone)
   dat=dat%>%
@@ -128,7 +130,7 @@ timeline_intervals=function(dat, startcol='start_time', endcol='end_time', trang
 
 
 #' timeline_plot
-#' 
+#'
 #' Create a timeline plot with one (n(t)) or two (if n_base is present in the data) lines.
 #'
 #' @param dat tibble with columns t, n and n_base (optional)
@@ -157,36 +159,36 @@ timeline_plot=function(dat,
                        ticksuffix='', ytitle_fontsize=14,
                        sliderthickness=0.05,
                        yrange=NULL,
-                       
+
                        linenames=NULL
-                       
+
 ){
-  
+
   require(tidyverse)
   require(plotly)
-  
+
   if(is.null(dat) || nrow(dat)==0) return()
-  
+
   if(all(dat$n[dat$t==min(dat$t)]==0)) dat=dat%>%filter(t>min(t))
   if(nrow(dat)==0) return()
-  
+
   trange=range(dat$t)
   if(trange[1]==trange[2]) trange=c(trange[1]-lubridate::hours(1), trange[1] + lubridate::hours(1))
-  
+
   if(all(dat$n==0)){
     yrange=c(0,1)
   }else if(!is.null(yrange)){
-    
+
     if(is.null(yrange$outlier_quantile)) yrange$outlier_quantile=1
-    
+
     z=c(0,1.2*quantile(dat$n, yrange$outlier_quantile))
-    
+
     if(!is.null(yrange$max)) z[2]=min(z[2], yrange$max)
-    
+
     yrange=z
   }
-  
-  
+
+
   if(nrow(dat)==1){
     fig=dat%>%
       plot_ly(x=~t, y=~n, type='scatter', mode='markers',
@@ -196,23 +198,23 @@ timeline_plot=function(dat,
               marker=list(color=linecolor)
       )
   }else{
-    
+
     if(length(smooth_bw) && (smooth_bw>0)){
       dat=dat%>%mutate(
         x=seq_len(n()), n=ksmooth(x=x, y=n, kernel=smooth_kernel, bandwidth=smooth_bw, n.points=n())$y
       )
-      
+
       if('n_base' %in% names(dat)){
         dat=dat%>%mutate(
           n_base=ksmooth(x=x, y=n_base, kernel=smooth_kernel, bandwidth=smooth_bw, n.points=n())$y
         )
-      } 
-      
+      }
+
     }
-    
+
     fig=dat%>%
       plot_ly(x=~t, y=~n, type='scatter', mode='lines',
-              
+
               fill=ifelse('n_base' %in% names(.),'', 'tozeroy'),
               hoverinfo=ifelse(length(linenames), 'x+y+name','x+y'),
               name=linenames[1],
@@ -220,9 +222,9 @@ timeline_plot=function(dat,
               line=list(color=linecolor, width=1),
               fillcolor=col_add_a(fillcolor)
       )
-    
+
     if('n_base' %in% names(dat)){
-      
+
       fig=fig%>%
         add_lines(
           y=~n_base,
@@ -230,12 +232,12 @@ timeline_plot=function(dat,
           hoverinfo=ifelse(length(linenames)>1, 'x+y+name','x+y'),
           name=linenames[2]
         )
-      
+
     }
-    
-    
+
+
   }
-  
+
   fig=fig%>%
     layout(
       hovermode=hovermode
@@ -247,11 +249,11 @@ timeline_plot=function(dat,
       ,paper_bgcolor=paper_bgcolor
       ,margin=list(t=0,b=0)
     )
-  
+
   if(!isnothing(sliderthickness)) fig=fig%>%rangeslider(thickness=sliderthickness)
 
-  
+
   fig%>%
     config(displayModeBar=FALSE)
-  
+
 }

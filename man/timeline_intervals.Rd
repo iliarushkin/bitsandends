@@ -19,6 +19,8 @@ timeline_intervals(dat, startcol = "start_time", endcol = "end_time",
 \item{step}{numeric, timestep to use in binning}
 
 \item{units}{character, units for step, as in difftime(), e.g. 'mins' or 'days'}
+
+\item{time_zone}{time zone}
 }
 \value{
 a tibble with columns t (bin-end times), n - count of ongoing events in the bin

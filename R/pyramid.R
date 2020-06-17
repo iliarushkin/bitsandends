@@ -17,15 +17,15 @@
 #' @export
 #'
 #' @examples
-pyramid_plot=function(dat, yticks=NULL, ytickvals=NULL, xtitle='', ytitle='', yname=NULL, 
+pyramid_plot=function(dat, yticks=NULL, xtitle='', ytitle='', yname=NULL,
                       palette=c('tomato', 'steelblue'),
                       plot_bgcolor='#ECF0F5', paper_bgcolor='#FCFCFC'
 ){
-  
+
   if(is.null(yname)) yname=ytitle
   palette=palette[1:2]
   if(is.null(names(palette))) names(palette)=c('f','m')
-  
+
   dat$gender=factor(dat$gender)
   dat$gender_num=as.numeric(dat$gender)
 
@@ -36,20 +36,20 @@ pyramid_plot=function(dat, yticks=NULL, ytickvals=NULL, xtitle='', ytitle='', yn
     complete(age=yticks, fill=list(n=0))%>%
     mutate(pct=100*n/nrow(dat))%>%
     mutate(nx=-n)
-  
+
   df2=dat%>%filter(gender_num==1)%>%
     drop_na(age)%>%
     group_by(age)%>%
     summarize(n=n())%>%
     complete(age=yticks, fill=list(n=0))%>%
     mutate(pct=100*n/nrow(dat))
-  
+
   if(is.character(yticks)){
     df1=df1%>%mutate(age=factor(age, levels=yticks))
     df2=df2%>%mutate(age=factor(age, levels=yticks))
   }
   tickvals=pretty(c(-max(df1$n), max(df2$n)))
-  
+
   fig=df1%>%
     plot_ly(x=~nx, y=~age,
             type='bar',
@@ -67,7 +67,7 @@ pyramid_plot=function(dat, yticks=NULL, ytickvals=NULL, xtitle='', ytitle='', yn
       name=levels(dat$gender)[1],
       showlegend=FALSE
     )
-  
+
   fig=fig%>%
     layout(
       barmode='relative',
@@ -76,8 +76,8 @@ pyramid_plot=function(dat, yticks=NULL, ytickvals=NULL, xtitle='', ytitle='', yn
       plot_bgcolor=plot_bgcolor,
       paper_bgcolor=paper_bgcolor
     )%>%config(displayModeBar=FALSE)
-  
-  
+
+
   return(fig)
-  
+
 }

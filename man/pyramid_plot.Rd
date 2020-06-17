@@ -4,8 +4,8 @@
 \alias{pyramid_plot}
 \title{pyramid_plot}
 \usage{
-pyramid_plot(dat, yticks = NULL, ytickvals = NULL, xtitle = "",
-  ytitle = "", yname = NULL, palette = c("tomato", "steelblue"),
+pyramid_plot(dat, yticks = NULL, xtitle = "", ytitle = "",
+  yname = NULL, palette = c("tomato", "steelblue"),
   plot_bgcolor = "#ECF0F5", paper_bgcolor = "#FCFCFC")
 }
 \arguments{

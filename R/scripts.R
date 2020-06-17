@@ -345,14 +345,14 @@ sortnum=function(x,...){
 #'
 #' @examples
 pU=function(unit, n, units=NULL){
-  
+
   if(is.null(units)) units=paste0(unit,'s')
-  
+
   ifelse(n==1, unit, units)
 }
 
 #' pN
-#' 
+#'
 #' Pretty number. Rounding if r is not NULL. If abs(x) is less than 1.5, rounding changes keeping 2 significant digits.
 #'
 #' @param x vector of number
@@ -367,18 +367,18 @@ pN=function(x, suff='', r=NULL){
   if(is.null(r)){
     paste0(prettyNum(x, big.mark = ','), suff)
   }else{
-    
+
     y=round(x,r)
     temp=(abs(x)<1.5)
     y[temp]=signif(x[temp],2)
-    
+
     paste0(prettyNum(y, big.mark = ','), suff)
   }
 }
 
 
 #' truncateString
-#' 
+#'
 #' A cosmetic function for truncating a string to n characters, adding "..." if needed.
 #'
 #' @param x vector of strings
@@ -393,12 +393,12 @@ truncateString=function(x,n=15){
   if(length(ind)>0){
     x[ind]=paste0(substr(x[ind],1,n),'...')
   }
-  
+
   return(x)
 }
 
 #' isnothing
-#' 
+#'
 #' Shorthand for checking if an object is nothing, e.g. of length 0 (including NULL), or NA, or '' or 0.
 #'
 #' @param x If length is greater than 1, will return TRUE if at least one element is nothing.
@@ -414,15 +414,16 @@ isnothing=function(x, nothing=list(0,'')){
   for(j in seq_along(nothing)){
     if(any(x==nothing[[j]])) return(TRUE)
   }
-  
+
   return(FALSE)
 }
 
 #' getmode
-#' 
+#'
 #' Calculate the mode of a vector
 #'
 #' @param x - vector.
+#' @param na.rm logical, whether to ignore NAs in x.
 #'
 #' @return
 #' @export

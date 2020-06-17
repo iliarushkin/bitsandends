@@ -37,21 +37,3 @@ Given a vector of values of parameters, return classification errors and confusi
 \details{
 All parameters of the classifier model, out of which the grid will be formed, are assumed to be passed to the classifier as single values (not vectors, matrices, etc). If you want to grid-search parameters that your model takes as, say, a vector, or if your model takes the formula and the data as arguments with different names, use a wrapper function for your model.
 }
-\examples{
-#Create fake data set and formula of prediction
-data=data.frame(x=sample(c(0,1),100,replace=TRUE),p1=runif(100),p2=runif(100))
-data$x=factor(data$x)
-formula=as.formula('x~p1+p2')
-
-#Create list of parameter values to try in the classifier
-params=list(cw=c(0.7, 0.8, 0.9), cost=c(100, 500, 1000), gamma=c(1e-6, 0.01, 0.05, 1, 10))
-
-
-#The SVM classifier e1071::svm takes class weights as a vector argument, so create a wrapper function
-mysvm=function(formula, data, cw, ...){
-   return(e1071::svm(formula=formula, data=data, class.weights=c('1'=cw, '0'=1-cw)))
-}
-
-#Find classification errors for each combination of parameters
-ans=gridclassifier(data=data, model=mysvm, formula=formula, params=params)
-}

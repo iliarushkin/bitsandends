@@ -19,11 +19,13 @@ timeline(dat, xcol = "t", trange = NULL, summarize = "n",
 
 \item{ycol}{name of the column with values to summarize. Required to be not NULL if summarize is not "n"}
 
-\item{step}{- numeric, timestep to use in binning}
+\item{step}{numeric, timestep to use in binning}
 
-\item{units}{- character, units for step, as in difftime(), e.g. 'mins' or 'days'}
+\item{units}{character, units for step, as in difftime(), e.g. 'mins' or 'days'}
 
-\item{crop}{- whether to crop range based on the values actually present in the data}
+\item{crop}{whether to crop range based on the values actually present in the data}
+
+\item{time_zone}{time zone}
 }
 \value{
 a tibble with columns t (bin-end times), n (value)

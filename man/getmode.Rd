@@ -8,6 +8,8 @@ getmode(x, na.rm = FALSE)
 }
 \arguments{
 \item{x}{- vector.}
+
+\item{na.rm}{logical, whether to ignore NAs in x.}
 }
 \description{
 Calculate the mode of a vector
