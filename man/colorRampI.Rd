@@ -24,3 +24,6 @@ vector of color codes
 \description{
 A wrapper for colorRamp with a few modifications. Returns a vector of color codes
 }
+\examples{
+#
+}

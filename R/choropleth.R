@@ -114,7 +114,7 @@ map_world=function(dat, item_name, suffix='', decimals=0, return_df=FALSE, inclu
 #' @return vector of color codes
 #' @export
 #'
-#' @examples
+#' @examples #
 colorRampI=function(x, na='white', quantiles=TRUE, colors=c('white','red'), ...){
 
 
@@ -142,3 +142,18 @@ colorRampI=function(x, na='white', quantiles=TRUE, colors=c('white','red'), ...)
 }
 
 
+#Not used. A function to coarse-grain polygons in maps, leaving, every-step-th point of the traced boundaries.
+simplify_polygons=function(dat, step=2){
+
+  if(step==1) return(dat)
+
+  dat$x=lapply(split(dat$x, cumsum(is.na(dat$x))), function(x){
+    c(x[seq(1,length(x)-1,step)],x[length(x)])
+  })%>%unlist()%>%setNames(NULL)
+
+  dat$y=lapply(split(dat$y, cumsum(is.na(dat$y))), function(x){
+    c(x[seq(1,length(x)-1,step)],x[length(x)])
+  })%>%unlist()%>%setNames(NULL)
+
+  return(dat)
+}
