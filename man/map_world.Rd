@@ -8,7 +8,7 @@ map_world(dat, item_name, suffix = "", decimals = 0,
   return_df = FALSE, include_vars = c("n"))
 }
 \arguments{
-\item{dat}{tibble, containing county (in the format of polyname in package "maps", e.g. "new york,new york") and n (numeric variable to be plotted)}
+\item{dat}{tibble, containing country (2-letter country codes, e.g. "US") and n (numeric variable to be plotted)}
 
 \item{item_name}{string, description of the plotted variable, to be shown in the hoverlabel}
 

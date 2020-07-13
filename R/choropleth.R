@@ -91,7 +91,7 @@ map_us=function(dat, item_name, suffix='', decimals=0, return_df=FALSE, include_
 #'
 #'Choropleth map of the world on country level
 #'
-#' @param dat tibble, containing county (in the format of polyname in package "maps", e.g. "new york,new york") and n (numeric variable to be plotted)
+#' @param dat tibble, containing country (2-letter country codes, e.g. "US") and n (numeric variable to be plotted)
 #' @param item_name string, description of the plotted variable, to be shown in the hoverlabel
 #' @param suffix string, units to be shown after the value of n in the hoverlabel
 #' @param decimals # integer, decimal points in rounding
@@ -106,8 +106,6 @@ map_world=function(dat, item_name, suffix='', decimals=0, return_df=FALSE, inclu
 
 
   dat=dat%>%group_by(COUNTRY_2=country)%>%
-    summarize(n=sum(interruption_n), n1=n_distinct(research_id), n2=sum(interruption_sum)/sum(duration))%>%
-    ungroup()%>%
     right_join(country_name_alphacode, by='COUNTRY_2')%>%
     rename(COUNTRY=COUNTRY_2)%>%
     arrange(ind)%>%
