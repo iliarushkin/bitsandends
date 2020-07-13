@@ -6,7 +6,6 @@
 #' @param level either 'us_county' (contiguous us map on the level of counties), or 'world' (on the level of countries).
 #'
 #' @return a list object that can be passed to leaflet()
-#' @export
 #'
 #' @examples #
 visdat_=function(dat, level='us_county'){
@@ -30,6 +29,21 @@ visdat_=function(dat, level='us_county'){
   return(visdat)
 }
 
+#' map_us
+#'
+#'Choropleth map of contiguous US on county level
+#'
+#' @param dat tibble, containing county (in the format of polyname in package "maps", e.g. "new york,new york") and n (numeric variable to be plotted)
+#' @param item_name string, description of the plotted variable, to be shown in the hoverlabel
+#' @param suffix string, units to be shown after the value of n in the hoverlabel
+#' @param decimals # integer, decimal points in rounding
+#' @param return_df #Boolean, whether to return table of results instead of a plot
+#' @param include_vars list of variables to include in the returned table. If return_df is FALSE, ignored.
+#'
+#' @return leaflet object or tibble, depending on return_df
+#' @export
+#'
+#' @examples
 map_us=function(dat, item_name, suffix='', decimals=0, return_df=FALSE, include_vars=c('n')){
 
   require(tidyverse)
@@ -57,13 +71,28 @@ map_us=function(dat, item_name, suffix='', decimals=0, return_df=FALSE, include_
       filter(n>0)%>%
       distinct()%>%
       arrange(desc(n))
-    return(list(dat=dat, fig=fig))
+    return(dat=dat)
   }
 
   return(fig)
 
 }
 
+#' map_world
+#'
+#'Choropleth map of the world on country level
+#'
+#' @param dat tibble, containing county (in the format of polyname in package "maps", e.g. "new york,new york") and n (numeric variable to be plotted)
+#' @param item_name string, description of the plotted variable, to be shown in the hoverlabel
+#' @param suffix string, units to be shown after the value of n in the hoverlabel
+#' @param decimals # integer, decimal points in rounding
+#' @param return_df #Boolean, whether to return table of results instead of a plot
+#' @param include_vars list of variables to include in the returned table. If return_df is FALSE, ignored.
+#'
+#' @return leaflet object or tibble, depending on return_df
+#' @export
+#'
+#' @examples
 map_world=function(dat, item_name, suffix='', decimals=0, return_df=FALSE, include_vars=c('n')){
 
   dat=dat%>%visdat_(level='world')
