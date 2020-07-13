@@ -34,7 +34,7 @@ visdat_=function(dat, level='us_county'){
 #'
 #'Choropleth map of contiguous US on county level
 #'
-#' @param dat tibble, containing polyname (in the format of polyname in package "maps", e.g. "new york,new york") and n (numeric variable to be plotted)
+#' @param dat tibble, containing polyname (in the format of polyname in package "maps", e.g. "new york,new york"), n (numeric variable to be plotted), and label (to be shown in hoverlabel)
 #' @param item_name string, description of the plotted variable, to be shown in the hoverlabel
 #' @param suffix string, units to be shown after the value of n in the hoverlabel
 #' @param decimals # integer, decimal points in rounding
@@ -45,7 +45,7 @@ visdat_=function(dat, level='us_county'){
 #' @export
 #'
 #' @examples
-map_us=function(dat, item_name, suffix='', decimals=0, return_df=FALSE, include_vars=c('n')){
+map_us=function(dat, return_df=FALSE, include_vars=c('n')){
 
   require(tidyverse)
   require(leaflet)
@@ -69,8 +69,7 @@ map_us=function(dat, item_name, suffix='', decimals=0, return_df=FALSE, include_
       stroke=FALSE,
       smoothFactor = 0,
       fillOpacity=0.5,
-      label=~lapply(paste0(STATE,', ',COUNTYNAME,'<br>',item_name,': ',ifelse(is.na(n), 0, pN(round(n,decimals))), suffix
-      ),htmltools::HTML)
+      label=~lapply(paste0(STATE,', ',COUNTYNAME,'<br>',label),htmltools::HTML)
     )
 
   if(return_df){
@@ -92,7 +91,7 @@ map_us=function(dat, item_name, suffix='', decimals=0, return_df=FALSE, include_
 #'
 #'Choropleth map of the world on country level
 #'
-#' @param dat tibble, containing country (2-letter country codes, e.g. "US") and n (numeric variable to be plotted)
+#' @param dat tibble, containing country (2-letter country codes, e.g. "US"), n (numeric variable to be plotted) and label (to be shown in hoverlabel)
 #' @param item_name string, description of the plotted variable, to be shown in the hoverlabel
 #' @param suffix string, units to be shown after the value of n in the hoverlabel
 #' @param decimals # integer, decimal points in rounding
@@ -103,7 +102,7 @@ map_us=function(dat, item_name, suffix='', decimals=0, return_df=FALSE, include_
 #' @export
 #'
 #' @examples
-map_world=function(dat, item_name, suffix='', decimals=0, return_df=FALSE, include_vars=c('n')){
+map_world=function(dat, return_df=FALSE, include_vars=c('n')){
 
 
   dat=dat%>%rename(COUNTRY_2=country)%>%
@@ -123,8 +122,7 @@ map_world=function(dat, item_name, suffix='', decimals=0, return_df=FALSE, inclu
       stroke=FALSE,
       smoothFactor = 0,
       fillOpacity=0.5,
-      label=~lapply(paste0(country_name,', ','<br>',item_name,': ',ifelse(is.na(n), 0, pN(round(n,decimals))), suffix
-      ),htmltools::HTML)
+      label=~lapply(paste0(country_name,'<br>',label),htmltools::HTML)
     )
 
   if(return_df){

@@ -4,21 +4,20 @@
 \alias{map_us}
 \title{map_us}
 \usage{
-map_us(dat, item_name, suffix = "", decimals = 0, return_df = FALSE,
-  include_vars = c("n"))
+map_us(dat, return_df = FALSE, include_vars = c("n"))
 }
 \arguments{
-\item{dat}{tibble, containing polyname (in the format of polyname in package "maps", e.g. "new york,new york") and n (numeric variable to be plotted)}
+\item{dat}{tibble, containing polyname (in the format of polyname in package "maps", e.g. "new york,new york"), n (numeric variable to be plotted), and label (to be shown in hoverlabel)}
+
+\item{return_df}{#Boolean, whether to return table of results instead of a plot}
+
+\item{include_vars}{list of variables to include in the returned table. If return_df is FALSE, ignored.}
 
 \item{item_name}{string, description of the plotted variable, to be shown in the hoverlabel}
 
 \item{suffix}{string, units to be shown after the value of n in the hoverlabel}
 
 \item{decimals}{# integer, decimal points in rounding}
-
-\item{return_df}{#Boolean, whether to return table of results instead of a plot}
-
-\item{include_vars}{list of variables to include in the returned table. If return_df is FALSE, ignored.}
 }
 \value{
 leaflet object or tibble, depending on return_df
