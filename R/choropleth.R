@@ -71,7 +71,7 @@ map_us=function(dat, item_name, suffix='', decimals=0, return_df=FALSE, include_
       filter(n>0)%>%
       distinct()%>%
       arrange(desc(n))
-    return(dat=dat)
+    return(dat)
   }
 
   return(fig)
@@ -123,7 +123,7 @@ map_world=function(dat, item_name, suffix='', decimals=0, return_df=FALSE, inclu
       mutate(country_name=if_else(temp>1, paste0(country_name, ' (',COUNTRY_3,')'), country_name))%>%
       select(-temp, -COUNTRY_3)%>%
       arrange(desc(n))
-    return(list(dat=dat, fig=fig))
+    return(dat)
   }
 
   return(fig)
@@ -171,18 +171,18 @@ colorRampI=function(x, na='white', quantiles=TRUE, colors=c('white','red'), ...)
 }
 
 
-#Not used. A function to coarse-grain polygons in maps, leaving, every-step-th point of the traced boundaries.
-simplify_polygons=function(dat, step=2){
-
-  if(step==1) return(dat)
-
-  dat$x=lapply(split(dat$x, cumsum(is.na(dat$x))), function(x){
-    c(x[seq(1,length(x)-1,step)],x[length(x)])
-  })%>%unlist()%>%setNames(NULL)
-
-  dat$y=lapply(split(dat$y, cumsum(is.na(dat$y))), function(x){
-    c(x[seq(1,length(x)-1,step)],x[length(x)])
-  })%>%unlist()%>%setNames(NULL)
-
-  return(dat)
-}
+# #Not used. A function to coarse-grain polygons in maps, leaving, every-step-th point of the traced boundaries.
+# simplify_polygons=function(dat, step=2){
+#
+#   if(step==1) return(dat)
+#
+#   dat$x=lapply(split(dat$x, cumsum(is.na(dat$x))), function(x){
+#     c(x[seq(1,length(x)-1,step)],x[length(x)])
+#   })%>%unlist()%>%setNames(NULL)
+#
+#   dat$y=lapply(split(dat$y, cumsum(is.na(dat$y))), function(x){
+#     c(x[seq(1,length(x)-1,step)],x[length(x)])
+#   })%>%unlist()%>%setNames(NULL)
+#
+#   return(dat)
+# }
