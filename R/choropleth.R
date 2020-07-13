@@ -7,6 +7,7 @@
 #'
 #' @return a list object that can be passed to leaflet()
 #'
+#'@export
 #' @examples #
 visdat_=function(dat, level='us_county'){
 
@@ -105,7 +106,7 @@ map_us=function(dat, item_name, suffix='', decimals=0, return_df=FALSE, include_
 map_world=function(dat, item_name, suffix='', decimals=0, return_df=FALSE, include_vars=c('n')){
 
 
-  dat=dat%>%group_by(COUNTRY_2=country)%>%
+  dat=dat%>%rename(COUNTRY_2=country)%>%
     right_join(country_name_alphacode, by='COUNTRY_2')%>%
     rename(COUNTRY=COUNTRY_2)%>%
     arrange(ind)%>%
