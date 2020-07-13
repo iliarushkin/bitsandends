@@ -33,7 +33,7 @@ visdat_=function(dat, level='us_county'){
 #'
 #'Choropleth map of contiguous US on county level
 #'
-#' @param dat tibble, containing county (in the format of polyname in package "maps", e.g. "new york,new york") and n (numeric variable to be plotted)
+#' @param dat tibble, containing polyname (in the format of polyname in package "maps", e.g. "new york,new york") and n (numeric variable to be plotted)
 #' @param item_name string, description of the plotted variable, to be shown in the hoverlabel
 #' @param suffix string, units to be shown after the value of n in the hoverlabel
 #' @param decimals # integer, decimal points in rounding
@@ -49,7 +49,16 @@ map_us=function(dat, item_name, suffix='', decimals=0, return_df=FALSE, include_
   require(tidyverse)
   require(leaflet)
 
-  dat=dat%>%visdat_()
+  dat=dat%>%right_join(
+
+    (us_counties%>%mutate(ind=seq_len(n()))),
+    by='polyname'
+
+  )%>%
+    arrange(ind)%>%
+    select(-ind)%>%
+    replace_na(list(n=0))%>%
+    visdat_()
 
   fig=dat%>%
     leaflet()%>%
