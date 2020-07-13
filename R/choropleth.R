@@ -51,7 +51,7 @@ map_us=function(dat, item_name, suffix='', decimals=0, return_df=FALSE, include_
 
   dat=dat%>%right_join(
 
-    (us_counties%>%mutate(ind=seq_len(n()))),
+    us_counties,
     by='polyname'
 
   )%>%
@@ -104,7 +104,16 @@ map_us=function(dat, item_name, suffix='', decimals=0, return_df=FALSE, include_
 #' @examples
 map_world=function(dat, item_name, suffix='', decimals=0, return_df=FALSE, include_vars=c('n')){
 
-  dat=dat%>%visdat_(level='world')
+
+  dat=dat%>%group_by(COUNTRY_2=country)%>%
+    summarize(n=sum(interruption_n), n1=n_distinct(research_id), n2=sum(interruption_sum)/sum(duration))%>%
+    ungroup()%>%
+    right_join(country_name_alphacode, by='COUNTRY_2')%>%
+    rename(COUNTRY=COUNTRY_2)%>%
+    arrange(ind)%>%
+    select(-ind)%>%
+    replace_na(list(n=0))%>%
+    visdat_(level='world')
 
   fig=dat%>%
     leaflet()%>%
