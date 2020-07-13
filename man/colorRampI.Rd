@@ -5,7 +5,7 @@
 \title{colorRampI}
 \usage{
 colorRampI(x, na = "white", quantiles = TRUE, colors = c("white",
-  "red"), ...)
+  "darkred"), ...)
 }
 \arguments{
 \item{x}{a numerical vector to be mapped on colors}

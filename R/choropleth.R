@@ -160,7 +160,7 @@ map_world=function(dat, item_name, suffix='', decimals=0, return_df=FALSE, inclu
 #' @export
 #'
 #' @examples #
-colorRampI=function(x, na='white', quantiles=TRUE, colors=c('white','red'), ...){
+colorRampI=function(x, na='white', quantiles=TRUE, colors=c('white','darkred'), ...){
 
 
   wherena=is.na(x)
