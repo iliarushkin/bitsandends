@@ -45,7 +45,7 @@ visdat_=function(dat, level='us_county', vars='n'){
 #' @export
 #'
 #' @examples
-map_us=function(dat, return_df=FALSE, include_vars=c('n')){
+map_us=function(dat, return_df=FALSE, vars='n'){
 
   require(tidyverse)
   require(leaflet)
