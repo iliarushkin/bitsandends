@@ -60,7 +60,7 @@ map_us=function(dat, return_df=FALSE, vars='n'){
   )%>%
     arrange(ind)%>%
     select(-ind)%>%
-    replace_na(list(n=0))%>%
+    mutate_at(vars, replace_na, replace=0)%>%
     visdat_(vars=vars)
 
   fig=dat%>%
@@ -90,10 +90,7 @@ map_us=function(dat, return_df=FALSE, vars='n'){
 
     dat=dat[c('STATE','COUNTYNAME',vars)]%>%
       as_tibble()%>%
-      drop_na(n)%>%
-      filter(n>0)%>%
-      distinct()%>%
-      arrange(desc(n))
+      distinct()
     return(dat)
   }
 
@@ -125,7 +122,7 @@ map_world=function(dat, return_df=FALSE, vars='n'){
     rename(COUNTRY=COUNTRY_2)%>%
     arrange(ind)%>%
     select(-ind)%>%
-    replace_na(list(n=0))%>%
+    mutate_at(vars, replace_na, replace=0)%>%
     visdat_(level='world', vars=vars)
 
   fig=dat%>%
@@ -156,15 +153,12 @@ map_world=function(dat, return_df=FALSE, vars='n'){
 
     dat=dat[c('country_name','COUNTRY_3',vars)]%>%
       as_tibble()%>%
-      drop_na(n)%>%
-      filter(n>0)%>%
       distinct(country_name, COUNTRY_3, .keep_all = TRUE)%>%
       group_by(country_name)%>%
       mutate(temp=n())%>%
       ungroup()%>%
       mutate(country_name=if_else(temp>1, paste0(country_name, ' (',COUNTRY_3,')'), country_name))%>%
-      select(-temp, -COUNTRY_3)%>%
-      arrange(desc(n))
+      select(-temp, -COUNTRY_3)
     return(dat)
   }
 
