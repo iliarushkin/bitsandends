@@ -9,7 +9,7 @@
 #'
 #'@export
 #' @examples #
-visdat_=function(dat, level='us_county'){
+visdat_=function(dat, level='us_county', vars='n'){
 
   require(tidyverse)
 
@@ -21,7 +21,7 @@ visdat_=function(dat, level='us_county'){
     visdat=world_foundation_map
   }
 
-  dat=dat%>%mutate(n=na_if(n,0))
+  dat=dat%>%mutate_at(vars, function(x) na_if(x,0))
 
   for(x in names(dat)){
     visdat[[x]]=dat%>%pull(x)
@@ -34,12 +34,12 @@ visdat_=function(dat, level='us_county'){
 #'
 #'Choropleth map of contiguous US on county level
 #'
-#' @param dat tibble, containing polyname (in the format of polyname in package "maps", e.g. "new york,new york"), n (numeric variable to be plotted), and label (to be shown in hoverlabel)
+#' @param dat tibble, containing polyname (in the format of polyname in package "maps", e.g. "new york,new york"), numeric variable(s) to be plotted, and label (to be shown in hoverlabel)
 #' @param item_name string, description of the plotted variable, to be shown in the hoverlabel
 #' @param suffix string, units to be shown after the value of n in the hoverlabel
 #' @param decimals # integer, decimal points in rounding
 #' @param return_df #Boolean, whether to return table of results instead of a plot
-#' @param include_vars list of variables to include in the returned table. If return_df is FALSE, ignored.
+#' @param vars vector of variables to include, possibly named. If more than one, will add layer control, using vector names.
 #'
 #' @return leaflet object or tibble, depending on return_df
 #' @export
@@ -50,6 +50,8 @@ map_us=function(dat, return_df=FALSE, include_vars=c('n')){
   require(tidyverse)
   require(leaflet)
 
+  if(is.null(names(vars))) names(vars)=vars
+
   dat=dat%>%right_join(
 
     us_counties,
@@ -59,22 +61,34 @@ map_us=function(dat, return_df=FALSE, include_vars=c('n')){
     arrange(ind)%>%
     select(-ind)%>%
     replace_na(list(n=0))%>%
-    visdat_()
+    visdat_(vars=vars)
 
   fig=dat%>%
     leaflet()%>%
-    addTiles()%>%
-    addPolygons(
-      color=~colorRampI(n, na=0),
+    addTiles()
+
+  for(i in seq_along(vars)){
+    fig=fig%>%
+      addPolygons(
+      color=colorRampI(dat[[vars[i]]], na=0),
       stroke=FALSE,
       smoothFactor = 0,
       fillOpacity=0.5,
-      label=~lapply(paste0(STATE,', ',COUNTYNAME,'<br>',label),htmltools::HTML)
+      label=~lapply(paste0(STATE,', ',COUNTYNAME,'<br>',label),htmltools::HTML),
+      group=names(vars)[i]
     )
+  }
+
+  if(length(vars)>1){
+    fig=fig%>%
+      addLayersControl(baseGroups = names(vars),
+                       options=layersControlOptions(collapsed=FALSE)
+      )
+  }
 
   if(return_df){
 
-    dat=dat[c('STATE','COUNTYNAME',include_vars)]%>%
+    dat=dat[c('STATE','COUNTYNAME',vars)]%>%
       as_tibble()%>%
       drop_na(n)%>%
       filter(n>0)%>%
@@ -91,19 +105,20 @@ map_us=function(dat, return_df=FALSE, include_vars=c('n')){
 #'
 #'Choropleth map of the world on country level
 #'
-#' @param dat tibble, containing country (2-letter country codes, e.g. "US"), n (numeric variable to be plotted) and label (to be shown in hoverlabel)
+#' @param dat tibble, containing country (2-letter country codes, e.g. "US"), numeric variable(s) to be plotted and label (to be shown in hoverlabel)
 #' @param item_name string, description of the plotted variable, to be shown in the hoverlabel
 #' @param suffix string, units to be shown after the value of n in the hoverlabel
 #' @param decimals # integer, decimal points in rounding
 #' @param return_df #Boolean, whether to return table of results instead of a plot
-#' @param include_vars list of variables to include in the returned table. If return_df is FALSE, ignored.
+#' @param vars vector of variables to include, possibly named. If more than one, will add layer control, using vector names.
 #'
 #' @return leaflet object or tibble, depending on return_df
 #' @export
 #'
 #' @examples
-map_world=function(dat, return_df=FALSE, include_vars=c('n')){
+map_world=function(dat, return_df=FALSE, vars='n'){
 
+  if(is.null(names(vars))) names(vars)=vars
 
   dat=dat%>%rename(COUNTRY_2=country)%>%
     right_join(country_name_alphacode, by='COUNTRY_2')%>%
@@ -111,23 +126,35 @@ map_world=function(dat, return_df=FALSE, include_vars=c('n')){
     arrange(ind)%>%
     select(-ind)%>%
     replace_na(list(n=0))%>%
-    visdat_(level='world')
+    visdat_(level='world', vars=vars)
 
   fig=dat%>%
     leaflet()%>%
     setView(lng = 0, lat = 25, zoom = 1.4)%>%
-    addTiles()%>%
+    addTiles()
+
+  for(i in seq_along(vars)){
+  fig=fig%>%
     addPolygons(
-      color=~colorRampI(n, na=0),
+      color=colorRampI(dat[[vars[i]]], na=0),
       stroke=FALSE,
       smoothFactor = 0,
       fillOpacity=0.5,
-      label=~lapply(paste0(country_name,'<br>',label),htmltools::HTML)
+      label=~lapply(paste0(country_name,'<br>',label),htmltools::HTML),
+      group=names(vars)[i]
     )
+  }
+
+  if(length(vars)>1){
+    fig=fig%>%
+      addLayersControl(baseGroups = names(vars),
+                       options=layersControlOptions(collapsed=FALSE)
+      )
+  }
 
   if(return_df){
 
-    dat=dat[c('country_name','COUNTRY_3',include_vars)]%>%
+    dat=dat[c('country_name','COUNTRY_3',vars)]%>%
       as_tibble()%>%
       drop_na(n)%>%
       filter(n>0)%>%
@@ -160,6 +187,9 @@ map_world=function(dat, return_df=FALSE, include_vars=c('n')){
 #'
 #' @examples #
 colorRampI=function(x, na='white', quantiles=TRUE, colors=c('white','red'), ...){
+
+
+  if('data.frame' %in% class(x)) x=x%>%pull(1)
 
 
   wherena=is.na(x)

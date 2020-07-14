@@ -4,7 +4,7 @@
 \alias{visdat_}
 \title{visdat_}
 \usage{
-visdat_(dat, level = "us_county")
+visdat_(dat, level = "us_county", vars = "n")
 }
 \arguments{
 \item{dat}{tibble.}
