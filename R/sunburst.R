@@ -101,7 +101,7 @@ sunburstdat=function(dat, pal=NULL){
 #'
 #' @examples #
 sunburst_plot=function(dat, item_name, domain=list(x=c(0,1), y=c(0,1))){
-  if(is.null(dat) || (nrow(dat)==0)) return(empty_plot)
+  if(is.null(dat) || (nrow(dat)==0)) return(plotly_empty(type='scatter', mode='markers')%>%config(displayModeBar=FALSE))
 
   dat$pct_text=paste0('<br>',signif(dat$pct*100,2),'% of ',item_name,' from ', dat$labels[match(dat$parents, dat$ids)])
   temp=(dat$parents=='lev0_1')

@@ -25,6 +25,8 @@ pyramid_plot=function(dat, yticks=NULL, xtitle='', ytitle='', yname=NULL,
   require(tidyverse)
   require(plotly)
 
+  if(is.null(dat) || (nrow(dat)==0)) return()
+
   if(is.null(yname)) yname=ytitle
   palette=palette[1:2]
   if(is.null(names(palette))) names(palette)=c('f','m')
