@@ -369,7 +369,7 @@ pN=function(x, suff='', r=NULL){
   }else{
 
     y=round(x,r)
-    temp=(abs(x)<1.5)
+    temp=(abs(x)<1.5 & (!is.na(x)))
     y[temp]=signif(x[temp],2)
 
     paste0(prettyNum(y, big.mark = ','), suff)
