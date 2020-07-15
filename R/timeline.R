@@ -21,7 +21,7 @@ timeline=function(dat, xcol='t', trange=NULL, summarize='n', ycol=NULL, step=15,
   require(lubridate)
   require(tidyverse)
 
-  if((is.null(dat) || (nrow(dat)==0)) & is.null(trange)) return()
+  if((is.null(dat) || (nrow(dat)==0)) & is.null(trange)) return(tibble(t=Sys.time(), n=0)%>%head(0))
 
   if(is.null(dat) || (nrow(dat)==0)){
     dat=tibble(t=trange, col_to_count=0)
