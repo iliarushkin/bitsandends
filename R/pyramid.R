@@ -53,7 +53,11 @@ pyramid_plot=function(dat, yticks=NULL, xtitle='', ytitle='', yname=NULL,
     df1=df1%>%mutate(age=factor(age, levels=yticks))
     df2=df2%>%mutate(age=factor(age, levels=yticks))
   }
-  tickvals=pretty(c(-max(df1$n), max(df2$n)))
+
+  amplitude=max(df1$n, df2$n)
+  tickvals=pretty(c(0, amplitude), n=1)
+  tickvals=tickvals[tickvals<=amplitude]
+  tickvals=c(-rev(tickvals[tickvals>0]), tickvals)
 
   fig=df1%>%
     plot_ly(x=~nx, y=~age,
@@ -76,7 +80,7 @@ pyramid_plot=function(dat, yticks=NULL, xtitle='', ytitle='', yname=NULL,
   fig=fig%>%
     layout(
       barmode='relative',
-      xaxis=list(title=xtitle, tickvals=tickvals, ticktext=abs(tickvals)),
+      xaxis=list(title=xtitle, tickvals=tickvals, ticktext=abs(tickvals), range=1.2*c(-amplitude, amplitude)),
       yaxis=list(title=ytitle),
       plot_bgcolor=plot_bgcolor,
       paper_bgcolor=paper_bgcolor
