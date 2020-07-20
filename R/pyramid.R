@@ -56,7 +56,7 @@ pyramid_plot=function(dat, yticks=NULL, xtitle='', ytitle='', yname=NULL,
 
   amplitude=max(df1$n, df2$n)
   tickvals=pretty(c(0, amplitude), n=1)
-  tickvals=tickvals[tickvals<=amplitude]
+  if(length(tickvals)>2) tickvals=tickvals[tickvals<=amplitude]
   tickvals=c(-rev(tickvals[tickvals>0]), tickvals)
 
   fig=df1%>%
