@@ -57,6 +57,7 @@ pyramid_plot=function(dat, yticks=NULL, xtitle='', ytitle='', yname=NULL,
   amplitude=max(df1$n, df2$n)
   tickvals=pretty(c(0, amplitude), n=1)
   if(length(tickvals)>2) tickvals=tickvals[tickvals<=amplitude]
+  amplitude=max(amplitude, tickvals)
   tickvals=c(-rev(tickvals[tickvals>0]), tickvals)
 
   fig=df1%>%
@@ -80,7 +81,7 @@ pyramid_plot=function(dat, yticks=NULL, xtitle='', ytitle='', yname=NULL,
   fig=fig%>%
     layout(
       barmode='relative',
-      xaxis=list(title=xtitle, tickvals=tickvals, ticktext=abs(tickvals), range=1.2*c(-amplitude, amplitude)),
+      xaxis=list(title=xtitle, tickvals=tickvals, ticktext=abs(tickvals), range=1.1*c(-amplitude, amplitude)),
       yaxis=list(title=ytitle),
       plot_bgcolor=plot_bgcolor,
       paper_bgcolor=paper_bgcolor
