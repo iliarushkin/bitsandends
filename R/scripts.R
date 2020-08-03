@@ -452,3 +452,18 @@ getmode=function(x, na.rm=FALSE){
 col_add_a=function(col, a=0.5){
   rgb(t(col2rgb(col)),alpha=a*255, maxColorValue = 255)
 }
+
+
+#' like_numeric
+#'
+#'Convenience function to determine if elements of a vector are convertible to numeric
+#'
+#' @param x - vector
+#'
+#' @return logical vector of same length as x
+#' @export
+#'
+#' @examples # like_numeric(c('1','a')) produces (TRUE, FALSE)
+like_numeric=function(x){
+  suppressWarnings({!is.na(as.numeric(x))})
+}
