@@ -493,4 +493,6 @@ suffix_format=function(x){
 
   y[x==0]='0'
 
+  return(y)
+
 }
