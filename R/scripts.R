@@ -467,3 +467,25 @@ col_add_a=function(col, a=0.5){
 like_numeric=function(x){
   suppressWarnings({!is.na(as.numeric(x))})
 }
+
+
+suffix_format=function(x){
+
+  y=as.character(x)
+  temp=(x %% 1e9==0)
+  y[temp]=paste0(x[temp] %/% 1e9, 'G')
+
+  temp1=(x %% 1e6==0)
+  temp=temp1 & (!temp)
+  y[temp]=paste0(x[temp] %/% 1e6, 'M')
+  temp=temp1
+
+  temp1=(x %% 1e3==0)
+  temp=temp1 & (!temp)
+  y[temp]=paste0(x[temp] %/% 1e3, 'k')
+  temp=temp1
+
+
+  y
+
+}

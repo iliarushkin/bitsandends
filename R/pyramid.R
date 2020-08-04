@@ -81,7 +81,7 @@ pyramid_plot=function(dat, yticks=NULL, xtitle='', ytitle='', yname=NULL,
   fig=fig%>%
     layout(
       barmode='relative',
-      xaxis=list(title=xtitle, tickvals=tickvals, ticktext=abs(tickvals), range=1.1*c(-amplitude, amplitude)),
+      xaxis=list(title=xtitle, tickvals=tickvals, ticktext=suffix_format(abs(tickvals)), range=1.1*c(-amplitude, amplitude)),
       yaxis=list(title=ytitle),
       plot_bgcolor=plot_bgcolor,
       paper_bgcolor=paper_bgcolor
