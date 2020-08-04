@@ -472,8 +472,13 @@ like_numeric=function(x){
 suffix_format=function(x){
 
   y=as.character(x)
-  temp=(x %% 1e9==0)
-  y[temp]=paste0(x[temp] %/% 1e9, 'G')
+  temp=(x %% 1e12==0)
+  y[temp]=paste0(x[temp] %/% 1e12, 'T')
+
+  temp1=(x %% 1e9==0)
+  temp=temp1 & (!temp)
+  y[temp]=paste0(x[temp] %/% 1e9, 'B')
+  temp=temp1
 
   temp1=(x %% 1e6==0)
   temp=temp1 & (!temp)
@@ -486,6 +491,6 @@ suffix_format=function(x){
   temp=temp1
 
 
-  y
+  y[x==0]='0'
 
 }
