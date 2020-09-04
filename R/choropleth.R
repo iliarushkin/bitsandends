@@ -35,9 +35,6 @@ visdat_=function(dat, level='us_county', vars='n'){
 #'Choropleth map of contiguous US on county level
 #'
 #' @param dat tibble, containing polyname (in the format of polyname in package "maps", e.g. "new york,new york"), numeric variable(s) to be plotted, and label (to be shown in hoverlabel)
-#' @param item_name string, description of the plotted variable, to be shown in the hoverlabel
-#' @param suffix string, units to be shown after the value of n in the hoverlabel
-#' @param decimals # integer, decimal points in rounding
 #' @param return_df #Boolean, whether to return table of results instead of a plot
 #' @param vars vector of variables to include, possibly named. If more than one, will add layer control, using vector names.
 #'
@@ -52,6 +49,8 @@ map_us=function(dat, return_df=FALSE, vars='n'){
 
   if(is.null(names(vars))) names(vars)=vars
 
+  if(!'label' %in% names(dat)) dat$label=''
+
   dat=dat%>%right_join(
 
     us_counties,
@@ -65,7 +64,8 @@ map_us=function(dat, return_df=FALSE, vars='n'){
 
   fig=dat%>%
     leaflet()%>%
-    addTiles()
+    # addTiles()
+    addProviderTiles(providers$CartoDB.Positron)
 
   for(i in seq_along(vars)){
     fig=fig%>%
@@ -102,23 +102,33 @@ map_us=function(dat, return_df=FALSE, vars='n'){
 #'
 #'Choropleth map of the world on country level
 #'
-#' @param dat tibble, containing country (2-letter country codes, e.g. "US"), numeric variable(s) to be plotted and label (to be shown in hoverlabel)
-#' @param item_name string, description of the plotted variable, to be shown in the hoverlabel
-#' @param suffix string, units to be shown after the value of n in the hoverlabel
-#' @param decimals # integer, decimal points in rounding
+#' @param dat tibble, containing country (2-letter country codes, or 3-letter codes, depending on country_nchar), numeric variable(s) to be plotted and label (to be shown in hoverlabel)
 #' @param return_df #Boolean, whether to return table of results instead of a plot
 #' @param vars vector of variables to include, possibly named. If more than one, will add layer control, using vector names.
+#' @param country_nchar 2 or 3, how to interpret the country values in dat: as 2- or 3-letter codes
 #'
 #' @return leaflet object or tibble, depending on return_df
 #' @export
 #'
 #' @examples
-map_world=function(dat, return_df=FALSE, vars='n'){
+map_world=function(dat, return_df=FALSE, vars='n', country_nchar=2){
+
+  require(tidyverse)
+  require(leaflet)
 
   if(is.null(names(vars))) names(vars)=vars
 
-  dat=dat%>%rename(COUNTRY_2=country)%>%
-    right_join(country_name_alphacode, by='COUNTRY_2')%>%
+  if(!'label' %in% names(dat)) dat$label=''
+
+  if(country_nchar==2){
+    dat=dat%>%rename(COUNTRY_2=country)%>%
+      right_join(country_name_alphacode, by='COUNTRY_2')
+  }else{
+    dat=dat%>%rename(COUNTRY_3=country)%>%
+      right_join(country_name_alphacode, by='COUNTRY_3')
+  }
+
+  dat=dat%>%
     rename(COUNTRY=COUNTRY_2)%>%
     arrange(ind)%>%
     select(-ind)%>%
@@ -128,7 +138,8 @@ map_world=function(dat, return_df=FALSE, vars='n'){
   fig=dat%>%
     leaflet()%>%
     setView(lng = 0, lat = 25, zoom = 1.4)%>%
-    addTiles()
+    # addTiles()
+    addProviderTiles(providers$CartoDB.Positron)
 
   for(i in seq_along(vars)){
   fig=fig%>%

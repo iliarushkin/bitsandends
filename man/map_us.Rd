@@ -12,12 +12,6 @@ map_us(dat, return_df = FALSE, vars = "n")
 \item{return_df}{#Boolean, whether to return table of results instead of a plot}
 
 \item{vars}{vector of variables to include, possibly named. If more than one, will add layer control, using vector names.}
-
-\item{item_name}{string, description of the plotted variable, to be shown in the hoverlabel}
-
-\item{suffix}{string, units to be shown after the value of n in the hoverlabel}
-
-\item{decimals}{# integer, decimal points in rounding}
 }
 \value{
 leaflet object or tibble, depending on return_df
