@@ -4,15 +4,11 @@
 \alias{timeline_intervals}
 \title{Timeline_intervals}
 \usage{
-timeline_intervals(dat, startcol = "start_time", endcol = "end_time",
-  trange = NULL, step = 15, units = "mins", time_zone = "UTC")
+timeline_intervals(dat, trange = NULL, step = 15, units = "mins",
+  time_zone = "UTC")
 }
 \arguments{
 \item{dat}{tibble}
-
-\item{startcol}{name of the column with start-times (quoted)}
-
-\item{endcol}{name of the column with end-times (quoted)}
 
 \item{trange}{range of times. If NULL, will be inferred from data.}
 

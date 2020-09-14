@@ -2,21 +2,19 @@
 #'
 #'A function for creating data for a timeline plot
 #'
-#' @param dat tibble
-#' @param xcol name of the column with times (quoted)
+#' @param dat tibble, must have column t of times. If "summarize" is not "n", needs a column whose name will be passed as "ycol", and if "summarize" is "weighted.mean", also a column of weights "w".
 #' @param trange range of times. If NULL, will be inferred from data.
-#' @param summarize one of the following strings: "n","n_distinct","sum", "mean", "weighted.mean", "median","max", to apply to idcol. For "n", ycol may be missing. For "weighted.mean" needs a column "w" of weights.
-#' @param ycol name of the column with values to summarize. Required to be not NULL if summarize is not "n"
-#' @param step numeric, timestep to use in binning
-#' @param units character, units for step, as in difftime(), e.g. 'mins' or 'days'
-#' @param crop whether to crop range based on the values actually present in the data
-#' @param time_zone time zone
+#' @param summarize one of the following strings: "n","n_distinct","sum", "mean", "weighted.mean", "median","max", to apply to ycol.
+#' @param ycol name of the column with values to summarize. If "summarize" is "n", may be left NULL.
+#' @param step numeric, timestep to use in binning.
+#' @param units character, units for step, as in difftime(), e.g. 'mins' or 'days'.
+#' @param time_zone time zone.
 #'
 #' @return a tibble with columns t (bin-end times), n (value)
 #' @export
 #'
 #' @examples #
-timeline=function(dat, xcol='t', trange=NULL, summarize='n', ycol=NULL, step=15, units='mins', crop=FALSE, time_zone='UTC'){
+timeline=function(dat, trange=NULL, summarize='n', ycol=NULL, step=15, units='mins', time_zone='UTC'){
 
   require(lubridate)
   require(tidyverse)
@@ -25,70 +23,53 @@ timeline=function(dat, xcol='t', trange=NULL, summarize='n', ycol=NULL, step=15,
 
   if(is.null(dat) || (nrow(dat)==0)){
     dat=tibble(t=trange, col_to_count=0)
-    xcol='t'
     ycol='col_to_count'
     summarize='max'
   }
-  #Preserve the input trange
-  trange0=trange
 
   if(!is.null(ycol)){
     if(('col_to_count' %in% names(dat)) & (ycol!='col_to_count')) dat=dat%>%select(-col_to_count)
     names(dat)[names(dat)==ycol]='col_to_count'
   }
 
-  t=dat%>%pull(xcol)%>%with_tz(time_zone)
+  t=dat%>%pull(t)%>%with_tz(time_zone)
 
   timestep=paste(step,units)
 
   if(is.null(trange)){
+    # trange=c(floor_date(min(t, na.rm=TRUE)+lubridate::minutes(-1), timestep), ceiling_date(max(t, na.rm=TRUE), timestep))
     trange=c(floor_date(min(t, na.rm=TRUE), timestep), ceiling_date(max(t, na.rm=TRUE), timestep))
   }else{
-    trange=as.POSIXct(trange)
+    trange=as.POSIXct(trange)%>%with_tz(time_zone)
+    trange=c(floor_date(trange[1], timestep), ceiling_date(trange[2], timestep))
   }
 
-  trange=trange%>%with_tz(time_zone)
-
-  trange=c(floor_date(trange[1]-lubridate::minutes(1), timestep), ceiling_date(trange[2]+lubridate::minutes(1),timestep))
-
-  if(crop & length(t)){
-    trange[1]=floor_date(max(trange[1], min(t, na.rm=TRUE)), timestep)
-    trange[2]=ceiling_date(min(trange[2], max(t, na.rm=TRUE)), timestep)
-  }
-
-  ts=seq(trange[1], trange[2], by=timestep)
-  ts_start=ts[-length(ts)]
-  ts_end=ts[-1]
+  ts=seq(trange[1], trange[2], by=timestep)[-1]
 
   if(length(t)==0){
-    return(tibble(t=ts_end, n=0))
+    return(tibble(t=ts, n=0))
   }
 
-  timebin=ceiling(as.numeric(difftime(t, ts[1], units=units))/step)
+  timebin=ceiling(as.numeric(difftime(t, trange[1], units=units))/step)
 
-  df=dat%>%
-    mutate(t=with_tz(ts_end[timebin]))%>%
+  dat=dat%>%
+    mutate(t=ts[timebin])%>%
     group_by(t)
 
-  df=switch(summarize
-            ,'n'=df%>%summarise(n=n())
-            ,'n_distinct'=df%>%summarize(n=n_distinct(col_to_count))
-            ,'sum'=df%>%summarize(n=sum(col_to_count))
-            ,'mean'=df%>%summarize(n=mean(col_to_count))
-            ,'weighted.mean'=df%>%summarize(n=weighted.mean(col_to_count, w))
-            ,'median'=df%>%summarize(n=median(col_to_count))
-            ,'max'=df%>%summarize(n=max(col_to_count))
+  dat=switch(summarize
+            ,'n'=dat%>%summarise(n=n())
+            ,'n_distinct'=dat%>%summarize(n=n_distinct(col_to_count))
+            ,'sum'=dat%>%summarize(n=sum(col_to_count))
+            ,'mean'=dat%>%summarize(n=mean(col_to_count))
+            ,'weighted.mean'=dat%>%summarize(n=weighted.mean(col_to_count, w))
+            ,'median'=dat%>%summarize(n=median(col_to_count))
+            ,'max'=dat%>%summarize(n=max(col_to_count))
   )%>%
-    complete(t=ts_end, fill=list(n=0))%>%
-    mutate(t=lubridate::with_tz(t, time_zone))
+    ungroup()%>%
+    complete(t=ts, fill=list(n=0))%>%
+    arrange(t)
 
-  if(!is.null(trange0)){
-    df=df%>%filter(t>=trange0[1] & t<=trange0[2])
-  }
-
-  df=df%>%arrange(t)
-
-  return(df)
+  return(dat)
 
 }
 
@@ -97,8 +78,6 @@ timeline=function(dat, xcol='t', trange=NULL, summarize='n', ycol=NULL, step=15,
 #' An extension of timeline(summarize='n', crop=FALSE) for intervals rather than single events.
 #'
 #' @param dat tibble
-#' @param startcol name of the column with start-times (quoted)
-#' @param endcol name of the column with end-times (quoted)
 #' @param trange range of times. If NULL, will be inferred from data.
 #' @param step numeric, timestep to use in binning
 #' @param units character, units for step, as in difftime(), e.g. 'mins' or 'days'
@@ -108,26 +87,27 @@ timeline=function(dat, xcol='t', trange=NULL, summarize='n', ycol=NULL, step=15,
 #' @export
 #'
 #' @examples #
-timeline_intervals=function(dat, startcol='start_time', endcol='end_time', trange=NULL, step=15, units='mins', time_zone='UTC'){
+timeline_intervals=function(dat, trange=NULL, step=15, units='mins', time_zone='UTC'){
 
   require(tidyverse)
   require(lubridate)
 
-  if(is.null(dat)) return(tibble(t=Sys.time()[0], n=numeric(0)))
-
-  names(dat)[names(dat)==startcol]='s'
-  names(dat)[names(dat)==endcol]='e'
+  if(is.null(dat) || (nrow(dat)==0)) return(tibble(t=Sys.time()[0], n=numeric(0)))
 
 
-  df=dat%>%
-    timeline('s', trange=trange, step=step, units=units, summarize='n', crop=FALSE, time_zone=time_zone)
   dat=dat%>%
-    timeline('e', trange=trange, step=step, units=units, summarize='n', crop=FALSE, time_zone=time_zone)%>%
-    mutate(n=lag(n, default=0))%>%rename(n_e=n)
-  dat=df%>%full_join(dat, by='t')%>%
+    mutate(t=start_time)%>%
+    timeline(trange=trange, step=step, units=units, summarize='n', time_zone=time_zone)%>%
+    full_join(
+      dat%>%
+        mutate(t=end_time)%>%
+        timeline(trange=trange, step=step, units=units, summarize='n', time_zone=time_zone)%>%
+        mutate(n=lag(n, default=0))%>%rename(n_e=n),
+      by='t'
+    )%>%
     mutate_if(is.numeric, replace_na, replace=0)%>%
     arrange(t)%>%
-    mutate(n=cumsum(n)-cumsum(n_e))%>%
+    mutate(n=cumsum(n-n_e))%>%
     select(-n_e)
   return(dat)
 }

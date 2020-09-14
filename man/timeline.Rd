@@ -4,28 +4,23 @@
 \alias{timeline}
 \title{timeline}
 \usage{
-timeline(dat, xcol = "t", trange = NULL, summarize = "n",
-  ycol = NULL, step = 15, units = "mins", crop = FALSE,
-  time_zone = "UTC")
+timeline(dat, trange = NULL, summarize = "n", ycol = NULL,
+  step = 15, units = "mins", time_zone = "UTC")
 }
 \arguments{
-\item{dat}{tibble}
-
-\item{xcol}{name of the column with times (quoted)}
+\item{dat}{tibble, must have column t of times. If "summarize" is not "n", needs a column whose name will be passed as "ycol", and if "summarize" is "weighted.mean", also a column of weights "w".}
 
 \item{trange}{range of times. If NULL, will be inferred from data.}
 
-\item{summarize}{one of the following strings: "n","n_distinct","sum", "mean", "weighted.mean", "median","max", to apply to idcol. For "n", ycol may be missing. For "weighted.mean" needs a column "w" of weights.}
+\item{summarize}{one of the following strings: "n","n_distinct","sum", "mean", "weighted.mean", "median","max", to apply to ycol.}
 
-\item{ycol}{name of the column with values to summarize. Required to be not NULL if summarize is not "n"}
+\item{ycol}{name of the column with values to summarize. If "summarize" is "n", may be left NULL.}
 
-\item{step}{numeric, timestep to use in binning}
+\item{step}{numeric, timestep to use in binning.}
 
-\item{units}{character, units for step, as in difftime(), e.g. 'mins' or 'days'}
+\item{units}{character, units for step, as in difftime(), e.g. 'mins' or 'days'.}
 
-\item{crop}{whether to crop range based on the values actually present in the data}
-
-\item{time_zone}{time zone}
+\item{time_zone}{time zone.}
 }
 \value{
 a tibble with columns t (bin-end times), n (value)
