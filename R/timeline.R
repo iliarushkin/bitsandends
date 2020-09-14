@@ -19,12 +19,19 @@ timeline=function(dat, trange=NULL, summarize='n', ycol=NULL, step=15, units='mi
   require(lubridate)
   require(tidyverse)
 
-  if((is.null(dat) || (nrow(dat)==0)) & is.null(trange)) return(tibble(t=Sys.time(), n=0)%>%head(0))
+  if(is.null(dat)) return(tibble(t=Sys.time(), n=0)%>%head(0))
 
-  if(is.null(dat) || (nrow(dat)==0)){
-    dat=tibble(t=trange, col_to_count=0)
-    ycol='col_to_count'
-    summarize='max'
+  if(!is.null(trange)){
+    dat=dat%>%filter(t>=trange[1] & t<=trange[2])
+  }
+
+  if(nrow(dat)==0){
+    if(is.null(trange)){
+      return(tibble(t=Sys.time(), n=0)%>%head(0))
+    }else{
+      dat=tibble(t=trange, col_to_count=0, w=1)
+      ycol='col_to_count'
+    }
   }
 
   if(!is.null(ycol)){
@@ -51,6 +58,8 @@ timeline=function(dat, trange=NULL, summarize='n', ycol=NULL, step=15, units='mi
   }
 
   timebin=ceiling(as.numeric(difftime(t, trange[1], units=units))/step)
+
+  timebin[timebin==0]=1
 
   dat=dat%>%
     mutate(t=ts[timebin])%>%

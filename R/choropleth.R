@@ -64,8 +64,8 @@ map_us=function(dat, return_df=FALSE, vars='n'){
 
   fig=dat%>%
     leaflet()%>%
-    # addTiles()
-    addProviderTiles(providers$CartoDB.Positron)
+    addTiles()
+    # addProviderTiles(providers$CartoDB.Positron)
 
   for(i in seq_along(vars)){
     fig=fig%>%
@@ -137,10 +137,10 @@ map_world=function(dat, return_df=FALSE, vars='n', country_nchar=2){
 
   fig=dat%>%
     leaflet()%>%
-    # setView(lng = 0, lat = 25, zoom = 1.4)%>%
-    # addTiles()
-    addProviderTiles(providers$CartoDB.Positron)%>%
-    setView(lng = 0, lat = 25, zoom = 1.4)
+    setView(lng = 0, lat = 25, zoom = 1.4)%>%
+    addTiles()
+    # addProviderTiles(providers$CartoDB.Positron)%>%
+    # setView(lng = 0, lat = 25, zoom = 1.4)
 
 
   for(i in seq_along(vars)){
