@@ -35,10 +35,10 @@ visdat_=function(dat, level='us_county', vars='n'){
 #'Choropleth map of contiguous US on county level
 #'
 #' @param dat tibble, containing polyname (in the format of polyname in package "maps", e.g. "new york,new york"), numeric variable(s) to be plotted, and label (to be shown in hoverlabel)
-#' @param return_df #Boolean, whether to return table of results instead of a plot
+#' @param return_df #Boolean, whether to return table of results in addition to a plot (as a list)
 #' @param vars vector of variables to include, possibly named. If more than one, will add layer control, using vector names.
 #'
-#' @return leaflet object or tibble, depending on return_df
+#' @return leaflet object, or a list of a leaflet object and a tibble, depending on return_df
 #' @export
 #'
 #' @examples
@@ -91,7 +91,7 @@ map_us=function(dat, return_df=FALSE, vars='n'){
     dat=dat[c('STATE','COUNTYNAME',vars)]%>%
       as_tibble()%>%
       distinct()
-    return(dat)
+    return(list(fig=fig, dat=dat))
   }
 
   return(fig)
@@ -103,11 +103,11 @@ map_us=function(dat, return_df=FALSE, vars='n'){
 #'Choropleth map of the world on country level
 #'
 #' @param dat tibble, containing country (2-letter country codes, or 3-letter codes, depending on country_nchar), numeric variable(s) to be plotted and label (to be shown in hoverlabel)
-#' @param return_df #Boolean, whether to return table of results instead of a plot
+#' @param return_df #Boolean, whether to return table of results in addition to a plot (as a list)
 #' @param vars vector of variables to include, possibly named. If more than one, will add layer control, using vector names.
 #' @param country_nchar 2 or 3, how to interpret the country values in dat: as 2- or 3-letter codes
 #'
-#' @return leaflet object or tibble, depending on return_df
+#' @return leaflet object, or a list of a leaflet object and a tibble, depending on return_df
 #' @export
 #'
 #' @examples
@@ -172,7 +172,7 @@ map_world=function(dat, return_df=FALSE, vars='n', country_nchar=2){
       ungroup()%>%
       mutate(country_name=if_else(temp>1, paste0(country_name, ' (',COUNTRY_3,')'), country_name))%>%
       select(-temp, -COUNTRY_3)
-    return(dat)
+    return(list(fig=fig, dat=dat))
   }
 
   return(fig)
