@@ -2,6 +2,7 @@
 
 export(Cohen.d)
 export(arcd)
+export(choropleth)
 export(clean_kgraph)
 export(col_add_a)
 export(colorRampI)

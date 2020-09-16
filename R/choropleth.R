@@ -235,6 +235,22 @@ colorRampI=function(x, na='white', quantiles=TRUE, colors=c('white','red'), ...)
 
 
 
+#' choropleth
+#'
+#' Choropleth map based on geojson data
+#'
+#' @param fig a leaflet object to which the choropleth polygons will be added
+#' @param mapdata geojson (sf) object
+#' @param group
+#' @param pal
+#' @param item_name
+#' @param decimals
+#' @param suffix
+#'
+#' @return
+#' @export
+#'
+#' @examples #
 choropleth=function(fig, mapdata, group=NULL, pal=NULL, item_name='users', decimals=NULL, suffix=''){
   require(leaflet)
 
