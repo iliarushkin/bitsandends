@@ -1,0 +1,17 @@
+# #The data stored in this package was created here
+#
+# library(tidyverse)
+# library(sf)
+# library(geojsonio)
+# library(maps)
+#
+# load('./data/us_state_codes.RData')
+#
+# us_counties_geojson=geojson_sf('https://raw.githubusercontent.com/plotly/datasets/master/geojson-counties-fips.json')
+# us_counties_geojson$name=paste0(us_counties_geojson$NAME, ', ', us_state_codes$code[match(us_counties_geojson$STATE, us_state_codes$fips)])
+# us_states_geojson=geojson_sf('https://raw.githubusercontent.com/PublicaMundi/MappingAPI/master/data/geojson/us-states.json')
+# countries_geojson=geojson_sf('https://raw.githubusercontent.com/PublicaMundi/MappingAPI/master/data/geojson/countries.geojson')
+#
+# save(us_counties_geojson, file='./data/us_counties_geojson.RData')
+# save(us_states_geojson, file='./data/us_states_geojson.RData')
+# save(countries_geojson, file='./data/countries_geojson.RData')

@@ -231,6 +231,34 @@ colorRampI=function(x, na='white', quantiles=TRUE, colors=c('white','red'), ...)
 }
 
 
+
+
+
+
+choropleth=function(fig, mapdata, group=NULL, pal=NULL, item_name='users', decimals=NULL, suffix=''){
+  require(leaflet)
+
+  if(is.null(pal)){
+    pal=colorNumeric("Greens", domain=mapdata$color)
+  }
+
+  suppressWarnings({
+    fig=addPolygons(fig, data=mapdata,
+                    fillColor = ~pal(color),
+                    fillOpacity = 0.7,
+                    weight = 0.2,
+                    stroke=TRUE,
+                    smoothFactor = 0,
+                    label = ~lapply(paste0(name,'<br>',item_name,': ',ifelse(is.na(n), 0, pN(n, r=decimals, suff=suffix))), htmltools::HTML),
+                    group=group
+    )
+  })
+
+  return(fig)
+}
+
+
+
 # #Not used. A function to coarse-grain polygons in maps, leaving, every-step-th point of the traced boundaries.
 # simplify_polygons=function(dat, step=2){
 #
