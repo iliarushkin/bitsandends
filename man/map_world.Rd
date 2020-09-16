@@ -4,7 +4,8 @@
 \alias{map_world}
 \title{map_world}
 \usage{
-map_world(dat, return_df = FALSE, vars = "n", country_nchar = 2)
+map_world(dat, return_df = FALSE, vars = "n", country_nchar = 2,
+  map_provider = "CartoDB.Positron")
 }
 \arguments{
 \item{dat}{tibble, containing country (2-letter country codes, or 3-letter codes, depending on country_nchar), numeric variable(s) to be plotted and label (to be shown in hoverlabel)}
@@ -14,6 +15,8 @@ map_world(dat, return_df = FALSE, vars = "n", country_nchar = 2)
 \item{vars}{vector of variables to include, possibly named. If more than one, will add layer control, using vector names.}
 
 \item{country_nchar}{2 or 3, how to interpret the country values in dat: as 2- or 3-letter codes}
+
+\item{map_provider}{provider of maptiles (see leaflet documentation). NULL will use leaflet default.}
 }
 \value{
 leaflet object, or a list of a leaflet object and a tibble, depending on return_df

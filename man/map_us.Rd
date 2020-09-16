@@ -4,7 +4,8 @@
 \alias{map_us}
 \title{map_us}
 \usage{
-map_us(dat, return_df = FALSE, vars = "n")
+map_us(dat, return_df = FALSE, vars = "n",
+  map_provider = "CartoDB.Positron")
 }
 \arguments{
 \item{dat}{tibble, containing polyname (in the format of polyname in package "maps", e.g. "new york,new york"), numeric variable(s) to be plotted, and label (to be shown in hoverlabel)}
@@ -12,6 +13,8 @@ map_us(dat, return_df = FALSE, vars = "n")
 \item{return_df}{#Boolean, whether to return table of results in addition to a plot (as a list)}
 
 \item{vars}{vector of variables to include, possibly named. If more than one, will add layer control, using vector names.}
+
+\item{map_provider}{provider of maptiles (see leaflet documentation). NULL will use leaflet default.}
 }
 \value{
 leaflet object, or a list of a leaflet object and a tibble, depending on return_df
