@@ -42,7 +42,7 @@ visdat_=function(dat, level='us_county', vars='n'){
 #' @export
 #'
 #' @examples
-map_us=function(dat, return_df=FALSE, vars='n', map_provider=NULL){
+map_us=function(dat, return_df=FALSE, vars='n', map_provider="CartoDB.Positron"){
 
   require(tidyverse)
   require(leaflet)
@@ -115,7 +115,7 @@ map_us=function(dat, return_df=FALSE, vars='n', map_provider=NULL){
 #' @export
 #'
 #' @examples
-map_world=function(dat, return_df=FALSE, vars='n', country_nchar=2, map_provider=NULL){
+map_world=function(dat, return_df=FALSE, vars='n', country_nchar=2, map_provider="CartoDB.Positron"){
 
   require(tidyverse)
   require(leaflet)
@@ -168,8 +168,8 @@ map_world=function(dat, return_df=FALSE, vars='n', country_nchar=2, map_provider
       )
   }
 
-  fig=fig%>%
-    setView(lng = 0, lat = 25, zoom = 1.4)
+  # fig=fig%>%
+  #   setView(lng = 0, lat = 25, zoom = 1.4)
 
   if(return_df){
 
