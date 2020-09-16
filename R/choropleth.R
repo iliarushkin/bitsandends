@@ -42,7 +42,7 @@ visdat_=function(dat, level='us_county', vars='n'){
 #' @export
 #'
 #' @examples
-map_us=function(dat, return_df=FALSE, vars='n'){
+map_us=function(dat, return_df=FALSE, vars='n', map_provider=NULL){
 
   require(tidyverse)
   require(leaflet)
@@ -63,9 +63,13 @@ map_us=function(dat, return_df=FALSE, vars='n'){
     visdat_(vars=vars)
 
   fig=dat%>%
-    leaflet()%>%
-    # addTiles()
-    addProviderTiles(providers$CartoDB.Positron)
+    leaflet()
+
+  if(is.null(map_provider)){
+    fig=fig%>%addTiles()
+  }else{
+    fig=fig%>%addProviderTiles(map_provider)
+  }
 
   for(i in seq_along(vars)){
     fig=fig%>%
@@ -111,7 +115,7 @@ map_us=function(dat, return_df=FALSE, vars='n'){
 #' @export
 #'
 #' @examples
-map_world=function(dat, return_df=FALSE, vars='n', country_nchar=2){
+map_world=function(dat, return_df=FALSE, vars='n', country_nchar=2, map_provider=NULL){
 
   require(tidyverse)
   require(leaflet)
@@ -136,9 +140,13 @@ map_world=function(dat, return_df=FALSE, vars='n', country_nchar=2){
     visdat_(level='world', vars=vars)
 
   fig=dat%>%
-    leaflet()%>%
-    # addTiles()
-    addProviderTiles(providers$CartoDB.Positron)
+    leaflet()
+
+  if(is.null(map_provider)){
+    fig=fig%>%addTiles()
+  }else{
+    fig=fig%>%addProviderTiles(map_provider)
+  }
 
 
   for(i in seq_along(vars)){
