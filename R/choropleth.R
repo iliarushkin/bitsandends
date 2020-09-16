@@ -37,6 +37,7 @@ visdat_=function(dat, level='us_county', vars='n'){
 #' @param dat tibble, containing polyname (in the format of polyname in package "maps", e.g. "new york,new york"), numeric variable(s) to be plotted, and label (to be shown in hoverlabel)
 #' @param return_df #Boolean, whether to return table of results in addition to a plot (as a list)
 #' @param vars vector of variables to include, possibly named. If more than one, will add layer control, using vector names.
+#' @param map_provider provider of maptiles (see leaflet documentation). NULL will use leaflet default.
 #'
 #' @return leaflet object, or a list of a leaflet object and a tibble, depending on return_df
 #' @export
@@ -110,6 +111,7 @@ map_us=function(dat, return_df=FALSE, vars='n', map_provider="CartoDB.Positron")
 #' @param return_df #Boolean, whether to return table of results in addition to a plot (as a list)
 #' @param vars vector of variables to include, possibly named. If more than one, will add layer control, using vector names.
 #' @param country_nchar 2 or 3, how to interpret the country values in dat: as 2- or 3-letter codes
+#' @param map_provider provider of maptiles (see leaflet documentation). NULL will use leaflet default.
 #'
 #' @return leaflet object, or a list of a leaflet object and a tibble, depending on return_df
 #' @export
