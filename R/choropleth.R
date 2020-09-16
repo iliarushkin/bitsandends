@@ -168,8 +168,8 @@ map_world=function(dat, return_df=FALSE, vars='n', country_nchar=2, map_provider
       )
   }
 
-  # fig=fig%>%
-  #   setView(lng = 0, lat = 25, zoom = 1.4)
+  fig=fig%>%
+    setView(lng = 0, lat = 25, zoom = 1.4)
 
   if(return_df){
 
