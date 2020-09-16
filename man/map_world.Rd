@@ -9,14 +9,14 @@ map_world(dat, return_df = FALSE, vars = "n", country_nchar = 2)
 \arguments{
 \item{dat}{tibble, containing country (2-letter country codes, or 3-letter codes, depending on country_nchar), numeric variable(s) to be plotted and label (to be shown in hoverlabel)}
 
-\item{return_df}{#Boolean, whether to return table of results instead of a plot}
+\item{return_df}{#Boolean, whether to return table of results in addition to a plot (as a list)}
 
 \item{vars}{vector of variables to include, possibly named. If more than one, will add layer control, using vector names.}
 
 \item{country_nchar}{2 or 3, how to interpret the country values in dat: as 2- or 3-letter codes}
 }
 \value{
-leaflet object or tibble, depending on return_df
+leaflet object, or a list of a leaflet object and a tibble, depending on return_df
 }
 \description{
 Choropleth map of the world on country level

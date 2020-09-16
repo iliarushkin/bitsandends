@@ -10,7 +10,7 @@ latlong2county(dat)
 \item{dat}{tibble with  columns 'longitude' and 'latitude'}
 }
 \value{
-dat with added columns 'countyname', 'county_state' and 'county' (pasted county and state, lowercase)
+dat with added columns 'fips','countyname', 'county_state' and 'county' (as polyname for package maps)
 }
 \description{
 Map coordinates onto US counties

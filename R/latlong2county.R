@@ -6,7 +6,8 @@
 #'
 #' @param dat tibble with  columns 'longitude' and 'latitude'
 #'
-#' @return dat with added columns 'countyname', 'county_state' and 'county' (pasted county and state, lowercase)
+#' @return dat with added columns 'fips','countyname', 'county_state' and 'county' (as polyname for package maps)
+#'
 #' @export
 #'
 #' @examples #
@@ -39,13 +40,22 @@ latlong2county=function(dat){
                     county=na_if(county,''),
                     countyname=na_if(countyname,''),
                     county_state=na_if(county_state,'')
-                    )
+                    )%>%
+    left_join(
+      maps::county.fips%>%
+        mutate(fips=as.character(fips))%>%
+        rename(county=polyname)%>%
+        distinct(county, .keep_all = TRUE)%>%
+        mutate(fips=ifelse(nchar(fips)==4, paste0('0',fips), fips)),
+
+      by='county'
+    )
 
   df=df%>%left_join(df_temp, by='county')
 
   dat%>%
     left_join(
-      df%>%select(ind, county, countyname, county_state),
+      df%>%select(ind, fips, county, countyname, county_state),
       by='ind'
     )%>%
     arrange(ind)%>%
@@ -68,7 +78,7 @@ latlong2county_=function(df) {
   require(tidyverse)
   # Prepare SpatialPolygons object with one SpatialPolygon
   # per county
-  counties=map('county', fill=TRUE, col="transparent", plot=FALSE)
+  counties=maps::map('county', fill=TRUE, col="transparent", plot=FALSE)
   IDs=sapply(strsplit(counties$names, ":"), function(x) x[1])
   counties_sp=map2SpatialPolygons(counties, IDs=IDs,
                                   proj4string=CRS("+proj=longlat +datum=WGS84"))

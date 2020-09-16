@@ -9,12 +9,12 @@ map_us(dat, return_df = FALSE, vars = "n")
 \arguments{
 \item{dat}{tibble, containing polyname (in the format of polyname in package "maps", e.g. "new york,new york"), numeric variable(s) to be plotted, and label (to be shown in hoverlabel)}
 
-\item{return_df}{#Boolean, whether to return table of results instead of a plot}
+\item{return_df}{#Boolean, whether to return table of results in addition to a plot (as a list)}
 
 \item{vars}{vector of variables to include, possibly named. If more than one, will add layer control, using vector names.}
 }
 \value{
-leaflet object or tibble, depending on return_df
+leaflet object, or a list of a leaflet object and a tibble, depending on return_df
 }
 \description{
 Choropleth map of contiguous US on county level
