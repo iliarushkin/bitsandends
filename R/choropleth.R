@@ -255,7 +255,7 @@ choropleth=function(fig, mapdata, group=NULL, pal=NULL, item_name='users', decim
   require(leaflet)
 
   if(is.null(pal)){
-    pal=colorNumeric("Greens", domain=mapdata$color)
+    pal=colorNumeric("Greens", domain=mapdata$color[!is.na(mapdata$color)])
   }
 
   suppressWarnings({
