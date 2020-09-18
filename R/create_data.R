@@ -9,6 +9,9 @@
 #
 # us_counties_geojson=geojson_sf('https://raw.githubusercontent.com/plotly/datasets/master/geojson-counties-fips.json')
 # us_counties_geojson$name=paste0(us_counties_geojson$NAME, ', ', us_state_codes$code[match(us_counties_geojson$STATE, us_state_codes$fips)])
+# us_counties_geojson$state_code=us_state_codes$code[match(us_counties_geojson$STATE, us_state_codes$fips)]
+# us_counties_geojson$state_name=us_state_codes$name[match(us_counties_geojson$STATE, us_state_codes$fips)]
+# us_counties_geojson$name=paste0(us_counties_geojson$NAME, ', ', us_counties_geojson$state_code)
 # us_states_geojson=geojson_sf('https://raw.githubusercontent.com/PublicaMundi/MappingAPI/master/data/geojson/us-states.json')
 # countries_geojson=geojson_sf('https://raw.githubusercontent.com/PublicaMundi/MappingAPI/master/data/geojson/countries.geojson')
 #
