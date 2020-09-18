@@ -251,8 +251,10 @@ colorRampI=function(x, na='white', quantiles=TRUE, colors=c('white','red'), ...)
 #' @export
 #'
 #' @examples #
-choropleth=function(fig, mapdata, group=NULL, pal=NULL, item_name='users', decimals=NULL, suffix=''){
+choropleth=function(fig, mapdata, group=NULL, pal=NULL, item_name='users', decimals=NULL, suffix='', na=NA){
   require(leaflet)
+
+  mapdata$n[is.na(mapdata$n)]=na
 
   if(is.null(pal)){
     pal=colorNumeric("Greens", domain=mapdata$color[!is.na(mapdata$color)])
@@ -265,7 +267,7 @@ choropleth=function(fig, mapdata, group=NULL, pal=NULL, item_name='users', decim
                     weight = 0.2,
                     stroke=TRUE,
                     smoothFactor = 0,
-                    label = ~lapply(paste0(name,'<br>',item_name,': ',ifelse(is.na(n), 0, pN(n, r=decimals, suff=suffix))), htmltools::HTML),
+                    label = ~lapply(paste0(name,'<br>',item_name,': ',ifelse(is.na(n), na, pN(n, r=decimals, suff=suffix))), htmltools::HTML),
                     group=group
     )
   })

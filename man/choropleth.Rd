@@ -5,7 +5,7 @@
 \title{choropleth}
 \usage{
 choropleth(fig, mapdata, group = NULL, pal = NULL,
-  item_name = "users", decimals = NULL, suffix = "")
+  item_name = "users", decimals = NULL, suffix = "", na = NA)
 }
 \arguments{
 \item{fig}{a leaflet object to which the choropleth polygons will be added}
