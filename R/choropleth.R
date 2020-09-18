@@ -256,6 +256,7 @@ choropleth=function(fig, mapdata, group=NULL, pal=NULL, item_name='users', decim
 
   mapdata$n[is.na(mapdata$n)]=na
 
+
   if(is.null(pal)){
     pal=colorNumeric("Greens", domain=mapdata$color[!is.na(mapdata$color)])
   }
