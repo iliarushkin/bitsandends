@@ -80,7 +80,7 @@ latlong2county_=function(df) {
   # per county
   counties=maps::map('county', fill=TRUE, col="transparent", plot=FALSE)
   IDs=sapply(strsplit(counties$names, ":"), function(x) x[1])
-  counties_sp=map2SpatialPolygons(counties, IDs=IDs,
+  counties_sp=maptools::map2SpatialPolygons(counties, IDs=IDs,
                                   proj4string=CRS("+proj=longlat +datum=WGS84"))
 
   # Convert df to a SpatialPoints object
