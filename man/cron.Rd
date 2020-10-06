@@ -5,7 +5,7 @@
 \title{cron}
 \usage{
 cron(runfile, frequency = "1 day", start_time = Sys.time(),
-  end_time = Inf, dt = 5, verbose = FALSE)
+  only_on = NULL, end_time = Inf, dt = 5, verbose = FALSE)
 }
 \arguments{
 \item{runfile}{path to the R file to run}
@@ -14,9 +14,11 @@ cron(runfile, frequency = "1 day", start_time = Sys.time(),
 
 \item{start_time}{datetime object}
 
+\item{only_on}{a vector of weekdays (full names capitalized, e.g. "Sunday"), on which to run. An object of 0 length (e.g. NULL) is equivalent to no restriction.}
+
 \item{end_time}{datetime object or Inf}
 
-\item{dt}{pulse period in seconds}
+\item{dt}{pulse period in seconds. Note that dt should be less than frequency.}
 
 \item{verbose}{logical}
 }
