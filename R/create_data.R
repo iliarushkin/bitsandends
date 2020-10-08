@@ -18,3 +18,10 @@
 # save(us_counties_geojson, file='./data/us_counties_geojson.RData')
 # save(us_states_geojson, file='./data/us_states_geojson.RData')
 # save(countries_geojson, file='./data/countries_geojson.RData')
+
+# us_counties_sp=sf::as(us_counties_geojson,'Spatial')
+# us_states_sp=sf::as(us_states_geojson,'Spatial')
+# countries_sp=sf::as(countries_geojson,'Spatial')
+# save(us_counties_sp, file='./data/us_counties_sp.RData')
+# save(us_states_sp, file='./data/us_states_sp.RData')
+# save(countries_sp, file='./data/countries_sp.RData')
