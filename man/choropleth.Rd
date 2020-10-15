@@ -4,15 +4,14 @@
 \alias{choropleth}
 \title{choropleth}
 \usage{
-choropleth(fig, mapdata, group = NULL, pal = NULL,
-  item_name = "users", decimals = NULL, suffix = "", na = NA)
+choropleth(fig, mapdata, group = NULL, pal = NULL, na = NA)
 }
 \arguments{
-\item{fig}{a leaflet object to which the choropleth polygons will be added}
+\item{fig}{a leaflet object to which the choropleth polygons will be added.}
 
-\item{mapdata}{geojson (sf) object}
+\item{mapdata}{geojson (sf or sp) object. Should contain columns n, label, color.}
 
-\item{suffix}{}
+\item{na}{- value with which to replace NAs in n.}
 }
 \description{
 Choropleth map based on geojson data

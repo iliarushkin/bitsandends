@@ -239,22 +239,20 @@ colorRampI=function(x, na='white', quantiles=TRUE, colors=c('white','red'), ...)
 #'
 #' Choropleth map based on geojson data
 #'
-#' @param fig a leaflet object to which the choropleth polygons will be added
-#' @param mapdata geojson (sf) object
+#' @param fig a leaflet object to which the choropleth polygons will be added.
+#' @param mapdata geojson (sf or sp) object. Should contain columns n, label, color.
 #' @param group
 #' @param pal
-#' @param item_name
-#' @param decimals
-#' @param suffix
+#' @param na - value with which to replace NAs in n.
 #'
 #' @return
 #' @export
 #'
 #' @examples #
-choropleth=function(fig, mapdata, group=NULL, pal=NULL, item_name='users', decimals=NULL, suffix='', na=NA){
+choropleth=function(fig, mapdata, group=NULL, pal=NULL, na=NA){
   require(leaflet)
 
-  mapdata$n[is.na(mapdata$n)]=na
+  if(!is.na(na)) mapdata$n[is.na(mapdata$n)]=na
 
 
   if(is.null(pal)){
@@ -268,7 +266,7 @@ choropleth=function(fig, mapdata, group=NULL, pal=NULL, item_name='users', decim
                     weight = 0.2,
                     stroke=TRUE,
                     smoothFactor = 0,
-                    label = ~lapply(paste0(name,'<br>',item_name,': ',ifelse(is.na(n), na, pN(n, r=decimals, suff=suffix))), htmltools::HTML),
+                    label = ~lapply(label, htmltools::HTML),
                     group=group
     )
   })
